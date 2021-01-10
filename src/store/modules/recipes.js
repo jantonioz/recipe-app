@@ -16,6 +16,9 @@ const getters = {
 			return result
 		}, [])
 	},
+	getAll: (state) => {
+		return state.all
+	},
 	getSelected: (state) => {
 		return state.detail
 	},

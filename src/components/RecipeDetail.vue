@@ -2,8 +2,15 @@
 	<v-container>
 		<v-row class="mb-6" justify="center">
 			<v-col>
-				<v-btn color="green lighten-2" v-on:click="back" class="mt-5" dark
-					><v-icon dark left> mdi-arrow-left </v-icon>Atrás</v-btn
+				<v-btn 
+					color="green lighten-2" 
+					v-on:click="back" 
+					class="mt-5" 
+					dark
+					>
+						<v-icon dark left> mdi-arrow-left </v-icon>
+						Atrás
+				</v-btn
 				>
 			</v-col>
 			<v-col cols="8" v-if="!loading">

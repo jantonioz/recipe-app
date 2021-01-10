@@ -1,10 +1,5 @@
 <template>
-	<v-card
-		:loading="loading"
-		class="mx-auto my-2 recipe-card col-6"
-		:max-width="maxWidth"
-		v-if="item.stars"
-	>
+	<v-card class="mx-auto my-2 col-6" :max-width="maxWidth">
 		<template slot="progress">
 			<v-progress-linear
 				color="deep-purple"
@@ -75,6 +70,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
 	name: 'RecipeFeedItem',
 	props: {
@@ -84,10 +80,15 @@ export default {
 		id: Number || -1,
 	},
 	data: () => ({
-		loading: false,
+		loading: true,
 		selection: 1,
-		item: {}
+		item: {},
 	}),
+	computed: {
+		...mapGetters('recipes', {
+			recipes: 'getAll',
+		}),
+	},
 	methods: {
 		verMas() {
 			console.log(this.id)
@@ -95,7 +96,9 @@ export default {
 		},
 	},
 	mounted() {
-		this.item = this.$store.state.recipes.find((e) => e.id === this.id)
+		this.item = this.recipes.find((e) => e._id === this.id)
 	},
 }
 </script>
+
+<style></style>

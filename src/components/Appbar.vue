@@ -31,7 +31,13 @@
 			flat
 			hide-no-data
 			item-color="secondary"
+			v-if="items"
 		>
+			<template v-slot:item="{ item }" dark>
+				<v-list-item-content @click="onClick">
+					<v-list-item-title v-text="item"></v-list-item-title>
+				</v-list-item-content>
+			</template>
 		</v-autocomplete>
 
 		<v-btn href="/login" target="_blank" text>
@@ -42,6 +48,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
 	name: 'Appbar',
 	props: {
@@ -53,9 +60,15 @@ export default {
 		search: null,
 		select: null,
 	}),
+	computed: {
+		...mapGetters('recipes', {
+			recipes: 'getAll',
+		}),
+	},
 	watch: {
 		search(val) {
 			val && val !== this.select && this.querySelections(val)
+			// console.log('val', val)
 		},
 	},
 	methods: {
@@ -63,13 +76,20 @@ export default {
 			this.loading = true
 			// Simulated ajax query
 			setTimeout(() => {
-				this.items = this.$store.state.recipes
+				this.items = this.recipes
 					.map((e) => e.title)
 					.filter((e) => {
 						return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
 					})
 				this.loading = false
 			}, 500)
+		},
+		onClick(evt) {
+			const item = this.recipes.find(
+				(e) => e.title === evt.target.innerText
+			)
+			if (!item) return null
+			this.$router.push(`/recipe/${item._id}`)
 		},
 	},
 }
