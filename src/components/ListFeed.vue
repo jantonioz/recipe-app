@@ -6,10 +6,8 @@
 			v-bind:title="item.title"
 		>
 			<RecipeFeedItem
-				:title="item.title"
-				:large="item.large"
-				more="true"
 				:id="item.id"
+				:more="true"
 			/>
 		</v-list-item>
 	</v-list>

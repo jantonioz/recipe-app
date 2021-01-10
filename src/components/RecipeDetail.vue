@@ -6,8 +6,14 @@
 					><v-icon dark left> mdi-arrow-left </v-icon>Atrás</v-btn
 				>
 			</v-col>
-			<v-col cols="8">
-				<RecipeFeedItem title="asd" large="true" maxWidth="10000" />
+			<v-col cols="8" v-if="!loading">
+				<RecipeFeedItem
+					v-model="id"
+					v-bind:id="id"
+					:large="true"
+					:maxWidth="10000"
+					:v-if="!loading"
+				/>
 			</v-col>
 			<v-col></v-col>
 		</v-row>
@@ -19,6 +25,14 @@ import RecipeFeedItem from './RecipeFeedItem'
 export default {
 	components: {
 		RecipeFeedItem,
+	},
+	data: () => ({
+		loading: true,
+		id: 9999,
+	}),
+	mounted() {
+		this.id = Number(this.$route.params.id)
+		this.loading = false
 	},
 	methods: {
 		back() {

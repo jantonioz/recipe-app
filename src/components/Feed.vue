@@ -11,6 +11,13 @@
 				<ListFeed :colIndex="2" />
 			</v-col>
 		</v-row>
+		<v-fab-transition>
+			<v-btn color="green" dark absolute bottom right fab
+				><v-icon>
+					mdi-up
+				</v-icon>
+			</v-btn>
+		</v-fab-transition>
 	</v-container>
 </template>
 
