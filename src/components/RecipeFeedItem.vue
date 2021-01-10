@@ -95,7 +95,6 @@ export default {
 		},
 	},
 	mounted() {
-		console.log(this.$store.state.recipes.find((e) => e.id === this.id))
 		this.item = this.$store.state.recipes.find((e) => e.id === this.id)
 	},
 }
