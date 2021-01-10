@@ -3,7 +3,7 @@
 		:loading="loading"
 		class="mx-auto my-2 recipe-card col-6"
 		:max-width="maxWidth"
-		v-if="item"
+		v-if="item.stars"
 	>
 		<template slot="progress">
 			<v-progress-linear
