@@ -1,5 +1,12 @@
 <template>
 	<v-container>
+		<v-fab-transition>
+			<v-btn color="green" dark fixed bottom right fab @click="top"
+				><v-icon>
+					mdi-chevron-up
+				</v-icon>
+			</v-btn>
+		</v-fab-transition>
 		<v-row justify="center">
 			<v-col cols="4">
 				<ListFeed :colIndex="0" />
@@ -11,13 +18,6 @@
 				<ListFeed :colIndex="2" />
 			</v-col>
 		</v-row>
-		<v-fab-transition>
-			<v-btn color="green" dark absolute bottom right fab
-				><v-icon>
-					mdi-up
-				</v-icon>
-			</v-btn>
-		</v-fab-transition>
 	</v-container>
 </template>
 
@@ -28,6 +28,11 @@ export default {
 	name: 'Feed',
 	components: {
 		ListFeed,
+	},
+	methods: {
+		top() {
+			window.scrollTo(0, 0)
+		},
 	},
 }
 </script>
