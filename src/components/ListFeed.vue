@@ -25,8 +25,10 @@ export default {
 	},
 	data() {
 		return {
-			list: this.$store.state.recipes
-				.slice(0 + this.colIndex * 4, 4 + this.colIndex * 4)
+			list: this.$store.state.recipes.slice(
+				0 + this.colIndex * 4,
+				4 + this.colIndex * 4
+			),
 		}
 	},
 	components: {
