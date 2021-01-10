@@ -9,19 +9,20 @@
 		</v-fab-transition>
 		<v-row justify="center">
 			<v-col cols="4">
-				<ListFeed :colIndex="0" />
+				<ListFeed :colIndex="0" :list="feedLists[0]" />
 			</v-col>
 			<v-col cols="4">
-				<ListFeed :colIndex="1" />
+				<ListFeed :colIndex="1" :list="feedLists[1]" />
 			</v-col>
 			<v-col cols="4">
-				<ListFeed :colIndex="2" />
+				<ListFeed :colIndex="2" :list="feedLists[2]" />
 			</v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ListFeed from './ListFeed'
 
 export default {
@@ -29,10 +30,18 @@ export default {
 	components: {
 		ListFeed,
 	},
+	computed: {
+		...mapGetters('recipes', {
+			feedLists: 'getFeeds',
+		}),
+	},
 	methods: {
 		top() {
 			window.scrollTo(0, 0)
 		},
+	},
+	async mounted() {
+		await this.$store.dispatch('recipes/getAllRecipes')
 	},
 }
 </script>

@@ -1,26 +1,32 @@
 <template>
-  <v-app>
-    <Appbar title="Recipes App!"/>
+	<v-app>
+		<Appbar title="Recipes App!" />
 
-    <v-main>
-      <router-view></router-view>
-    </v-main>
-  </v-app>
+		<v-main v-if="user && user.name">
+			<router-view></router-view>
+		</v-main>
+	</v-app>
 </template>
 
 <script>
-import Appbar from './components/Appbar';
+import { mapGetters } from 'vuex'
 
+import Appbar from './components/Appbar'
 
 export default {
-  name: 'App',
+	name: 'App',
 
-  components: {
-    Appbar
-  },
-
-  data: () => ({
-    //
-  }),
-};
+	components: {
+		Appbar,
+	},
+	computed: mapGetters('user', {
+		user: 'getUser',
+	}),
+	data: () => ({
+		//
+	}),
+	async created() {
+		await this.$store.dispatch('user/login')
+	},
+}
 </script>
