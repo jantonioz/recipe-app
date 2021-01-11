@@ -1,10 +1,6 @@
 <template>
 	<div>
-		<v-card
-			class="mx-auto my-2 col-6"
-			:max-width="maxWidth"
-			v-if="item.rateAvg"
-		>
+		<v-card class="mx-auto my-2 col-6" :max-width="maxWidth" v-if="item.title">
 			<template slot="progress">
 				<v-progress-linear
 					color="deep-purple"
@@ -32,7 +28,9 @@
 					></v-rating>
 
 					<div class="grey--text ml-4">
-						{{ item.rateAvg.toFixed(1) }} ({{ item.rates.length.toFixed(0) }})
+						{{ item.rateAvg.toFixed(1) }} ({{
+							(item.rates || []).length.toFixed(0) || 0
+						}})
 					</div>
 				</v-row>
 
@@ -65,34 +63,50 @@
 										}}
 									</span>
 								</v-avatar>
-								{{ rate.author.fullName }}
+								{{ rate.author.fullName }} - {{ createdAt() }}
 							</v-list-item-subtitle>
-							<v-row>
-								<v-col md="auto">
-									<v-rating
-										hover
-										length="5"
-										size="14"
-										:value="rate.rate"
-										readonly
-										dense
-									>
-									</v-rating>
-								</v-col>
-								<v-col>
-									<v-list-item-title>{{ rate.comment }}</v-list-item-title>
-								</v-col>
-							</v-row>
+							<v-col>
+								<v-row class="ml-2">
+									<v-col md="auto">
+										<v-rating
+											hover
+											length="5"
+											size="14"
+											:value="rate.rate"
+											readonly
+											dense
+										>
+										</v-rating>
+									</v-col>
+									<v-col>
+										<v-list-item-title>{{
+											levels[rate.rate]
+										}}</v-list-item-title>
+									</v-col>
+								</v-row>
+
+								<v-textarea
+									readonly
+									:value="rate.comment"
+									flat
+									dense
+									auto-grow
+									no-resize
+									rounded
+									solo
+								></v-textarea>
+							</v-col>
 						</v-list-item-content>
 					</v-list-item>
 				</v-list>
 			</v-card-text>
 		</v-card>
-    <CardRecipeDetailComment :maxWidth="1000" :recipeId="item._id" />
+		<CardRecipeDetailComment :maxWidth="1000" :recipeId="item._id" />
 	</div>
 </template>
 
 <script>
+import moment from 'moment'
 import CardRecipeDetailComment from './CardRecipeDetailComment'
 
 export default {
@@ -100,10 +114,24 @@ export default {
 		item: Object,
 		maxWidth: Number,
 	},
+	data: () => ({
+		levels: {
+			1: 'Muy malo!!!!!!1',
+			2: 'Malo',
+			3: 'Bien',
+			4: 'Muy bueno!',
+			5: 'Excelente!',
+		},
+	}),
 	components: {
 		CardRecipeDetailComment,
 	},
 	mounted() {},
+	methods: {
+		createdAt() {
+			return moment.utc(this.item.createdAt).format('LLLL')
+		},
+	},
 }
 </script>
 

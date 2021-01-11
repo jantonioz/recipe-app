@@ -26,7 +26,7 @@
 			label
 			v-model="comment"
 			:value="comment"
-      elevation="1"
+			elevation="1"
 		></v-textarea>
 
 		<v-card-actions class="d-flex justify-end">
@@ -54,7 +54,15 @@ export default {
 		}),
 	},
 	methods: {
-		enviar() {},
+		async enviar() {
+			await this.$store.dispatch('recipes/sendRate', {
+				recipe: this.recipeId,
+				comment: this.comment,
+				rate: this.rating,
+			})
+			this.comment = ''
+			this.rating = 0
+		},
 	},
 }
 </script>
