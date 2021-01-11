@@ -32,6 +32,14 @@ class API {
 		const { data } = await this.api.get(`/recipes/${id}`)
 		return data.recipe
 	}
+
+	async makeRate(recipe, { rate, comment }) {
+		const { data } = await this.api.post(`/recipes/${recipe}`, {
+			rate,
+			comment,
+		})
+		return data
+	}
 }
 
 export default new API()

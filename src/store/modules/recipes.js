@@ -33,6 +33,10 @@ const actions = {
 		const recipe = await api.getOneRecipe(id)
 		commit('setDetail', recipe)
 	},
+	async sendRate({ commit }, recipe, { rating, comment }) {
+		const result = await api.makeRate(recipe, { rating, comment })
+		commit('sendRate', result)
+	},
 }
 
 const mutations = {
@@ -40,6 +44,9 @@ const mutations = {
 		state.all = recipes
 	},
 	setDetail(state, recipe) {
+		state.detail = recipe
+	},
+	sendRate(state, recipe) {
 		state.detail = recipe
 	},
 }
