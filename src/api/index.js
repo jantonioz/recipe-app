@@ -34,11 +34,11 @@ class API {
 	}
 
 	async makeRate(recipe, { rate, comment }) {
-		const { data } = await this.api.post(`/recipes/${recipe}`, {
+		const { data } = await this.api.post(`/recipes/${recipe}/rate`, {
 			rate,
 			comment,
 		})
-		return data
+		return data.rate
 	}
 }
 

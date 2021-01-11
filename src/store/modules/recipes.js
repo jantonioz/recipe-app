@@ -33,9 +33,10 @@ const actions = {
 		const recipe = await api.getOneRecipe(id)
 		commit('setDetail', recipe)
 	},
-	async sendRate({ commit }, recipe, { rating, comment }) {
-		const result = await api.makeRate(recipe, { rating, comment })
+	async sendRate({ commit }, { recipe, rate, comment }) {
+		const result = await api.makeRate(recipe, { rate, comment })
 		commit('sendRate', result)
+		return result
 	},
 }
 
