@@ -29,8 +29,8 @@ const actions = {
 		const recipes = await api.getAllRecipes()
 		commit('setRecipes', recipes)
 	},
-	async getOneRecipe({ commit }, { _id }) {
-		const recipe = await api.getOneRecipe(_id)
+	async setDetail({ commit }, id) {
+		const recipe = await api.getOneRecipe(id)
 		commit('setDetail', recipe)
 	},
 }

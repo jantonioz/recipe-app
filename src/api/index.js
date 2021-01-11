@@ -27,6 +27,11 @@ class API {
 		const { data } = await this.api.get('/recipes')
 		return data.recipes
 	}
+
+	async getOneRecipe(id) {
+		const { data } = await this.api.get(`/recipes/${id}`)
+		return data.recipe
+	}
 }
 
 export default new API()
