@@ -38,29 +38,8 @@
 			<div class="my-4 subtitle-1">$ • {{ item.tags.join(', ') }}</div>
 
 			<div>
-				Small plates, salads & sandwiches - an intimate setting with 12 indoor
-				seats plus patio seating.
+				{{ item.body }}
 			</div>
-		</v-card-text>
-
-		<v-divider class="mx-4" v-if="large"></v-divider>
-
-		<v-card-title v-if="large">Tonight's availability</v-card-title>
-
-		<v-card-text v-if="large">
-			<v-chip-group
-				v-model="selection"
-				active-class="green accent-4 white--text"
-				column
-			>
-				<v-chip>5:30PM</v-chip>
-
-				<v-chip>7:30PM</v-chip>
-
-				<v-chip>8:00PM</v-chip>
-
-				<v-chip>9:00PM</v-chip>
-			</v-chip-group>
 		</v-card-text>
 
 		<v-card-actions v-if="more">
@@ -95,7 +74,7 @@ export default {
 			this.$store.dispatch('recipes/setDetail', this.item._id)
 			this.$router.push(`/recipe/${this.item._id}`)
 		},
-	}
+	},
 }
 </script>
 
