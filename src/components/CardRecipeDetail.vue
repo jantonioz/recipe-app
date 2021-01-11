@@ -88,7 +88,7 @@
 				</v-list>
 			</v-card-text>
 		</v-card>
-    <CardRecipeDetailComment :maxWidth="1000" :recipeId="item._Id" />
+    <CardRecipeDetailComment :maxWidth="1000" :recipeId="item._id" />
 	</div>
 </template>
 
