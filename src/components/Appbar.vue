@@ -40,10 +40,11 @@
 			</template>
 		</v-autocomplete>
 
-		<v-btn href="/login" target="_blank" text>
+		<v-btn href="/login" target="_blank" text v-if="!user">
 			<span class="mr-2">Iniciar sesión</span>
 			<v-icon>mdi-login</v-icon>
 		</v-btn>
+		<span class="mr-12 ml-6" v-if="user">{{ user.name }}</span>
 	</v-app-bar>
 </template>
 
@@ -63,6 +64,9 @@ export default {
 	computed: {
 		...mapGetters('recipes', {
 			recipes: 'getAll',
+		}),
+		...mapGetters('user', {
+			user: 'getUser',
 		}),
 	},
 	watch: {
@@ -85,9 +89,7 @@ export default {
 			}, 500)
 		},
 		onClick(evt) {
-			const item = this.recipes.find(
-				(e) => e.title === evt.target.innerText
-			)
+			const item = this.recipes.find((e) => e.title === evt.target.innerText)
 			if (!item) return null
 			this.$router.push(`/recipe/${item._id}`)
 		},
