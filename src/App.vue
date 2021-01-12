@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<Appbar title="Recipes App!" />
-
+		<NavigationDrawer />
 		<v-main v-if="user && user.name">
 			<router-view></router-view>
 		</v-main>
@@ -12,12 +12,14 @@
 import { mapGetters } from 'vuex'
 
 import Appbar from './components/Appbar'
+import NavigationDrawer from './components/NavigationDrawer'
 
 export default {
 	name: 'App',
 
 	components: {
 		Appbar,
+		NavigationDrawer,
 	},
 	computed: mapGetters('user', {
 		user: 'getUser',

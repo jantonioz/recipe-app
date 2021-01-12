@@ -1,5 +1,6 @@
 <template>
 	<v-app-bar app color="primary" dark>
+		<v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
 		<div class="d-flex align-center">
 			<v-img
 				alt="Vuetify Logo"
@@ -50,11 +51,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
 	name: 'Appbar',
 	props: {
 		title: String,
 	},
+	components: {},
 	data: () => ({
 		loading: false,
 		items: [],
@@ -67,6 +70,9 @@ export default {
 		}),
 		...mapGetters('user', {
 			user: 'getUser',
+		}),
+		...mapGetters('drawer', {
+			drawer: 'getDrawer',
 		}),
 	},
 	watch: {
@@ -86,12 +92,15 @@ export default {
 						return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
 					})
 				this.loading = false
-			}, 500)
+			}, 10)
 		},
 		onClick(evt) {
 			const item = this.recipes.find((e) => e.title === evt.target.innerText)
 			if (!item) return null
 			this.$router.push(`/recipe/${item._id}`)
+		},
+		toggleDrawer() {
+			this.$store.dispatch('drawer/toggleDrawer')
 		},
 	},
 }
