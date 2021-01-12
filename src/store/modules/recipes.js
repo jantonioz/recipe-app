@@ -38,14 +38,8 @@ const actions = {
 		commit('sendRate', result)
 		return result
 	},
-	async addRecipe(_, { title, level, tags, ingredients, body }) {
-		const result = await api.addRecipe({
-			title,
-			level,
-			tags,
-			ingredients,
-			body,
-		})
+	async addRecipe(_, recipe) {
+		const result = await api.addRecipe(recipe)
 		return result
 	},
 }

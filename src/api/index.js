@@ -40,6 +40,11 @@ class API {
 		})
 		return data.rate
 	}
+
+	async addRecipe(recipe) {
+		const { data } = await this.api.post(`/recipes`, recipe)
+		return data
+	}
 }
 
 export default new API()

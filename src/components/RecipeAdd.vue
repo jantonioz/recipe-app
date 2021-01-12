@@ -14,7 +14,8 @@
 		></v-img>
 
 		<v-card-title>
-			<v-text-field flat outlined placeholder="Titulo"> </v-text-field>
+			<v-text-field flat outlined placeholder="Titulo" v-model="title">
+			</v-text-field>
 		</v-card-title>
 
 		<v-card-text>
@@ -54,14 +55,21 @@
 				outlined
 				label="Ingredients"
 			></v-combobox>
-			<v-textarea flat outlined label="Procedure"></v-textarea>
+			<v-textarea
+				flat
+				outlined
+				label="Procedure"
+				v-model="prodecure"
+			></v-textarea>
 		</v-card-text>
 		<v-card-actions class="d-flex justify-end">
-			<v-btn class="green darken-1" text dark>
+			<v-btn class="green darken-1" text dark @click="add">
 				Add
 			</v-btn>
 		</v-card-actions>
-		<v-snackbar v-model="snackbar"> {{ result }} </v-snackbar>
+		<v-overlay :value="loading">
+			<v-progress-circular indeterminate size="64"></v-progress-circular>
+		</v-overlay>
 	</v-card>
 </template>
 
@@ -69,6 +77,8 @@
 export default {
 	props: {},
 	data: () => ({
+		title: '',
+		prodecure: '',
 		tags: [],
 		tagsItems: [],
 		ingredents: [],
@@ -77,6 +87,7 @@ export default {
 		select: null,
 		search: null,
 		slider: 1,
+		loading: false
 	}),
 	watch: {
 		tags(e) {
@@ -86,7 +97,19 @@ export default {
 			this.ingredentsItems = e
 		},
 	},
-	methods: {},
+	methods: {
+		async add() {
+			this.loading = true
+			await this.$store.dispatch('recipes/addRecipe', {
+				title: this.title,
+				tags: this.tags,
+				ingredients: this.ingredents,
+				level: this.slider,
+				body: this.prodecure,
+			})
+			this.loading = false
+		},
+	},
 }
 </script>
 
