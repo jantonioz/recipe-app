@@ -15,21 +15,21 @@
 							</v-col>
 							<v-col>
 								<v-text-field
-									v-model="firstName"
-									label="FirstName"
-                  outlined
+									v-model="user.username"
+									label="username"
+									outlined
 								></v-text-field>
 								<v-text-field
-									v-model="lastName"
-									label="Last Name"
-                  outlined
+									v-model="user.name"
+									label="Full name"
+									outlined
 								></v-text-field>
 								<v-text-field
-									v-model="email"
+									v-model="user.email"
 									label="Email Address"
-                  outlined
+									outlined
 								></v-text-field>
-                <v-card-text>Birthday</v-card-text>
+								<v-card-text>Birthday</v-card-text>
 								<v-date-picker
 									v-model="picker"
 									color="green lighten-1"
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
 	pageTitle: 'My Profile',
 	components: {},
@@ -65,9 +66,14 @@ export default {
 			firstName: 'John',
 			lastName: 'Doe',
 			email: 'john@doe.com',
-      avatar: 'JD',
-      picker: new Date().toISOString().substr(0, 10),
+			avatar: 'JD',
+			picker: new Date().toISOString().substr(0, 10),
 		}
+	},
+	computed: {
+		...mapGetters('user', {
+			user: 'getUser',
+		}),
 	},
 	watch: {
 		firstName() {
