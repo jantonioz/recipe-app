@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Feed from '../components/Feed'
 import RecipeDetail from '../components/RecipeDetail'
 import RecipeAdd from '../components/RecipeAdd'
+import Profile from '../components/Profile'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/recipes/add',
     name: 'RecipeAdd',
     component: RecipeAdd
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   }
 ]
 
