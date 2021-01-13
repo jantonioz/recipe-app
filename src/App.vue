@@ -32,8 +32,9 @@ export default {
 			this.$router.push('/login')
 	},
 	watch: {
-		user(v) {
-			console.log('app.wathc.user', v)
+		user(u) {
+			if ((!u || !u.name) && this.$route.path !== '/login')
+				this.$router.push('/login')
 		},
 	},
 }

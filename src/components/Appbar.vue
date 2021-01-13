@@ -41,11 +41,16 @@
 			</template>
 		</v-autocomplete>
 
-		<v-btn href="/login" target="_blank" text v-if="!user">
+		<v-btn href="/login" target="_blank" text v-if="!user.name">
 			<span class="mr-2">Iniciar sesión</span>
 			<v-icon>mdi-login</v-icon>
 		</v-btn>
+
 		<span class="mr-12 ml-6" v-if="user">{{ user.name }}</span>
+
+		<v-btn @click="logout" target="_blank" text v-if="user.name" dense>
+			<v-icon>mdi-logout</v-icon>
+		</v-btn>
 	</v-app-bar>
 </template>
 
@@ -79,7 +84,7 @@ export default {
 		search(val) {
 			val && val !== this.select && this.querySelections(val)
 			// console.log('val', val)
-		},
+		}
 	},
 	methods: {
 		querySelections(v) {
@@ -101,6 +106,9 @@ export default {
 		},
 		toggleDrawer() {
 			this.$store.dispatch('drawer/toggleDrawer')
+		},
+		logout() {
+			this.$store.dispatch('user/logout')
 		},
 	},
 }
