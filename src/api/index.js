@@ -8,11 +8,18 @@ class API {
 	}
 
 	async login(username, password) {
-		const { data } = await this.api.post('/login', { username, password })
-		if (data.token) {
-			this.updateToken(data.token)
+		try {
+			const { data } = await this.api.post('/login', { username, password })
+			if (data.token) {
+				this.updateToken(data.token)
+			}
+			return this.user
+		} catch (error) {
+			throw {
+				code: error.response.data.code || 401,
+				message: error.response.data.message || 'Invalid credentials',
+			}
 		}
-		return this.user
 	}
 
 	updateToken(token) {

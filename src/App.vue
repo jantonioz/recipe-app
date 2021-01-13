@@ -1,8 +1,8 @@
 <template>
 	<v-app>
-		<Appbar title="Recipes App!" />
-		<NavigationDrawer />
-		<v-main v-if="user && user.name">
+		<Appbar title="Recipes App!" v-if="user.name" />
+		<NavigationDrawer v-if="user.name" />
+		<v-main>
 			<router-view></router-view>
 		</v-main>
 	</v-app>
@@ -27,8 +27,14 @@ export default {
 	data: () => ({
 		//
 	}),
-	async created() {
-		await this.$store.dispatch('user/login')
+	created() {
+		if (!this.user.name && this.$route.path !== '/login')
+			this.$router.push('/login')
+	},
+	watch: {
+		user(v) {
+			console.log('app.wathc.user', v)
+		},
 	},
 }
 </script>

@@ -1,8 +1,8 @@
 import api from '../../api/index'
 
 const state = () => ({
-  user: {},
-  token: null
+	user: {},
+	token: null,
 })
 
 const getters = {
@@ -11,21 +11,27 @@ const getters = {
 	},
 	getUser: (state) => {
 		console.log('getUser', state.user)
-		return state.user
-	}
+		return state.user || {}
+	},
 }
 
 const actions = {
-	async login({ commit }) {
-		const user = await api.login('antonio', '1234')
-		commit('setUser', user)
-	}
+	async login({ commit }, { username, password }) {
+		try {
+			const user = await api.login(username, password)
+			commit('setUser', user)
+			return user
+		} catch (error) {
+			commit('setUser', {})
+			return error
+		}
+	},
 }
 
 const mutations = {
 	setUser(state, user) {
 		state.user = user
-	}
+	},
 }
 
 export default {
