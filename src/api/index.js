@@ -1,10 +1,12 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import store from '../store'
 
 class API {
 	constructor() {
 		this.api = axios.create({ baseURL: 'http://localhost:3090/api' })
 		this.user = null
+		this.token = null
 	}
 
 	async login(username, password) {
@@ -35,12 +37,13 @@ class API {
 		}
 	}
 
-	updateToken(token) {
+	updateToken() {
+		this.token = store.getters['user/getToken']
 		this.api = axios.create({
 			baseURL: 'http://localhost:3090/api',
-			headers: { Authorization: `Bearer ${token}` },
+			headers: { Authorization: `Bearer ${this.token}` },
 		})
-		this.user = jwt.decode(token)
+		this.user = jwt.decode(this.token)
 	}
 
 	async getAllRecipes(token) {

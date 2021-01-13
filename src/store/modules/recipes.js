@@ -25,21 +25,21 @@ const getters = {
 }
 
 const actions = {
-	async getAllRecipes({ commit, state }) {
-		const recipes = await api.getAllRecipes(state.token)
+	async getAllRecipes({ commit }, token) {
+		const recipes = await api.getAllRecipes(token)
 		commit('setRecipes', recipes)
 	},
-	async setDetail({ commit, state }, id) {
-		const recipe = await api.getOneRecipe(id, state.token)
+	async setDetail({ commit }, id) {
+		const recipe = await api.getOneRecipe(id)
 		commit('setDetail', recipe)
 	},
-	async sendRate({ commit, state }, { recipe, rate, comment }) {
-		const result = await api.makeRate(recipe, { rate, comment }, state.token)
+	async sendRate({ commit }, { recipe, rate, comment }) {
+		const result = await api.makeRate(recipe, { rate, comment })
 		commit('sendRate', result)
 		return result
 	},
-	async addRecipe({ state }, recipe) {
-		const result = await api.addRecipe(recipe, state.token)
+	async addRecipe(_, recipe) {
+		const result = await api.addRecipe(recipe)
 		return result
 	},
 }

@@ -46,7 +46,7 @@
 			<v-icon>mdi-login</v-icon>
 		</v-btn>
 
-		<span class="mr-12 ml-6" v-if="user">{{ user.name }}</span>
+		<AppbarMenuAccount />
 
 		<v-btn @click="logout" target="_blank" text v-if="user.name" dense>
 			<v-icon>mdi-logout</v-icon>
@@ -57,12 +57,16 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import AppbarMenuAccount from './AppbarMenuAccount'
+
 export default {
 	name: 'Appbar',
 	props: {
 		title: String,
 	},
-	components: {},
+	components: {
+		AppbarMenuAccount
+	},
 	data: () => ({
 		loading: false,
 		items: [],

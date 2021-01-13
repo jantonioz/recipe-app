@@ -34,6 +34,9 @@ export default {
 		...mapGetters('recipes', {
 			feedLists: 'getFeeds',
 		}),
+		...mapGetters('user', {
+			token: 'getToken'
+		})
 	},
 	methods: {
 		top() {
@@ -41,7 +44,7 @@ export default {
 		},
 	},
 	async mounted() {
-		await this.$store.dispatch('recipes/getAllRecipes')
+		await this.$store.dispatch('recipes/getAllRecipes', this.token)
 	},
 }
 </script>

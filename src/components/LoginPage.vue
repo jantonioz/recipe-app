@@ -55,6 +55,7 @@ export default {
 	methods: {
 		async login() {
 			const result = await this.$store.dispatch('user/login', this.credentials)
+			console.log('LoginPage', result)
 			if (!result.name) {
 				console.log('login', result)
 				this.error = result

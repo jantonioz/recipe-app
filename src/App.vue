@@ -23,6 +23,7 @@ export default {
 	},
 	computed: mapGetters('user', {
 		user: 'getUser',
+		token: 'getToken',
 	}),
 	data: () => ({
 		//
@@ -30,6 +31,12 @@ export default {
 	created() {
 		if (!this.user.name && this.$route.path !== '/login')
 			this.$router.push('/login')
+		if (this.token) {
+			this.$store.dispatch('user/setToken', this.token)
+		}
+		if (!this.token) {
+			this.$store.dispatch('user/logout')
+		}
 	},
 	watch: {
 		user(u) {
