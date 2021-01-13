@@ -12,13 +12,17 @@ const getters = {
 	getUser: (state) => {
 		return state.user || {}
 	},
+	getToken: (state) => {
+		return state.token
+	}
 }
 
 const actions = {
 	async login({ commit }, { username, password }) {
 		try {
-			const user = await api.login(username, password)
+			const { user, token } = await api.login(username, password)
 			commit('setUser', user)
+			commit('setToken', token)
 			return user
 		} catch (error) {
 			commit('setUser', {})
@@ -28,9 +32,9 @@ const actions = {
 	logout({ commit }) {
 		commit('logout')
 	},
-	async update({ commit }, user) {
+	async update({ commit, state }, user) {
 		try {
-			const newUser = await api.updateUser(user)
+			const newUser = await api.updateUser(user, state.token)
 			console.log(newUser)
 			commit('updateUser', newUser)
 		} catch (error) {
@@ -42,6 +46,9 @@ const actions = {
 const mutations = {
 	setUser(state, user) {
 		state.user = user
+	},
+	setTOken(state, token) {
+		state.token = token
 	},
 	logout(state) {
 		state.user = null

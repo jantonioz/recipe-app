@@ -13,7 +13,7 @@ class API {
 			if (data.token) {
 				this.updateToken(data.token)
 			}
-			return this.user
+			return { user: this.user, token: data.token }
 		} catch (error) {
 			throw {
 				code: error.response.data.code || 401,
@@ -22,7 +22,8 @@ class API {
 		}
 	}
 
-	async updateUser(user) {
+	async updateUser(user, token) {
+		this.updateToken(token)
 		try {
 			const { data } = await this.api.put('/account/info', user)
 			return data
@@ -42,17 +43,20 @@ class API {
 		this.user = jwt.decode(token)
 	}
 
-	async getAllRecipes() {
+	async getAllRecipes(token) {
+		this.updateToken(token)
 		const { data } = await this.api.get('/recipes')
 		return data.recipes
 	}
 
-	async getOneRecipe(id) {
+	async getOneRecipe(id, token) {
+		this.updateToken(token)
 		const { data } = await this.api.get(`/recipes/${id}`)
 		return data.recipe
 	}
 
-	async makeRate(recipe, { rate, comment }) {
+	async makeRate(recipe, { rate, comment }, token) {
+		this.updateToken(token)
 		const { data } = await this.api.post(`/recipes/${recipe}/rate`, {
 			rate,
 			comment,
@@ -60,7 +64,8 @@ class API {
 		return data.rate
 	}
 
-	async addRecipe(recipe) {
+	async addRecipe(recipe, token) {
+		this.updateToken(token)
 		const { data } = await this.api.post(`/recipes`, recipe)
 		return data
 	}
