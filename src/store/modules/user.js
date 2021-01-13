@@ -10,7 +10,6 @@ const getters = {
 		return state.user.fullName
 	},
 	getUser: (state) => {
-		console.log('getUser', state.user)
 		return state.user || {}
 	},
 }
@@ -29,6 +28,15 @@ const actions = {
 	logout({ commit }) {
 		commit('logout')
 	},
+	async update({ commit }, user) {
+		try {
+			const newUser = await api.updateUser(user)
+			console.log(newUser)
+			commit('updateUser', newUser)
+		} catch (error) {
+			return error
+		}
+	},
 }
 
 const mutations = {
@@ -37,7 +45,10 @@ const mutations = {
 	},
 	logout(state) {
 		state.user = null
-	}
+	},
+	updateUser(state, user) {
+		state.user = user
+	},
 }
 
 export default {

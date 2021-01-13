@@ -15,23 +15,23 @@
 							</v-col>
 							<v-col>
 								<v-text-field
-									v-model="user.username"
+									v-model="username"
 									label="username"
 									outlined
 								></v-text-field>
 								<v-text-field
-									v-model="user.name"
+									v-model="fullName"
 									label="Full name"
 									outlined
 								></v-text-field>
 								<v-text-field
-									v-model="user.email"
+									v-model="email"
 									label="Email Address"
 									outlined
 								></v-text-field>
 								<v-card-text>Birthday</v-card-text>
 								<v-date-picker
-									v-model="picker"
+									v-model="birthday"
 									color="green lighten-1"
 								></v-date-picker>
 							</v-col>
@@ -63,11 +63,11 @@ export default {
 	data() {
 		return {
 			loading: false,
-			firstName: 'John',
-			lastName: 'Doe',
-			email: 'john@doe.com',
-			avatar: 'JD',
-			picker: new Date().toISOString().substr(0, 10),
+			avatar: '',
+			birthday: new Date().toISOString().substring(0, 10),
+			fullName: '',
+			email: '',
+			username: '',
 		}
 	},
 	computed: {
@@ -75,25 +75,31 @@ export default {
 			user: 'getUser',
 		}),
 	},
+	mounted() {
+		if (this.user.username) {
+			this.username = this.user.username
+			this.fullName = this.user.fullName
+			this.email = this.user.email
+			this.birthday = this.user.birthday
+		}
+	},
 	watch: {
-		firstName() {
-			this.avatar =
-				this.firstName.charAt(0).toUpperCase() +
-				this.lastName.charAt(0).toUpperCase()
-		},
-
-		lastName() {
-			this.avatar =
-				this.firstName.charAt(0).toUpperCase() +
-				this.lastName.charAt(0).toUpperCase()
+		fullName(p) {
+			console.log(p)
+			this.avatar = p
+				.split(' ')
+				.map((e) => e.toUpperCase().charAt(0))
+				.join('')
 		},
 	},
 	methods: {
-		openAvatarPicker() {
-			this.showAvatarPicker = true
-		},
-		selectAvatar(avatar) {
-			this.form.avatar = avatar
+		async update() {
+			await this.$store.dispatch('user/update', {
+				username: this.username,
+				fullName: this.fullName,
+				email: this.email,
+				birthday: this.birthday,
+			})
 		},
 	},
 }

@@ -22,6 +22,18 @@ class API {
 		}
 	}
 
+	async updateUser(user) {
+		try {
+			const { data } = await this.api.put('/account/info', user)
+			return data
+		} catch (error) {
+			throw {
+				code: error.response.data.code || 401,
+				message: error.response.data.message || 'Invalid credentials',
+			}
+		}
+	}
+
 	updateToken(token) {
 		this.api = axios.create({
 			baseURL: 'http://localhost:3090/api',
