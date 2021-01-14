@@ -72,7 +72,7 @@ export default {
 	methods: {
 		verMas() {
 			this.$store.dispatch('recipes/setDetail', this.item._id)
-			this.$router.push(`/recipe/${this.item._id}`)
+			this.$router.push(`/recipes/${this.item._id}`)
 		},
 	},
 }

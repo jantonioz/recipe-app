@@ -17,7 +17,7 @@ const routes = [
     component: Feed
   },
   {
-    path: '/recipe/:id',
+    path: '/recipes/:id',
     name: 'RecipeDetail',
     component: RecipeDetail
   },

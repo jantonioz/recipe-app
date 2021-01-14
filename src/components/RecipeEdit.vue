@@ -107,8 +107,8 @@ export default {
         this.id = r._id || r.id
         this.title = r.title
         this.prodecure = r.body
-        this.ingredients = r.ingredents
-        this.ingredientsItems = r.ingredents
+        this.ingredients = r.ingredients
+        this.ingredientsItems = r.ingredients
         this.tags = r.tags
         this.tagsItems = r.tagsItems
         this.slider = r.level
@@ -137,7 +137,7 @@ export default {
 					body: this.prodecure,
 				})
         this.loading = false
-        this.$store.dispatch('recipes/setDetail', this.item._id)
+        await this.$store.dispatch('recipes/setDetail', this.id)
 				this.$router.push(`/recipes/${this.id}`)
 			} catch (error) {
 				this.loading = false
