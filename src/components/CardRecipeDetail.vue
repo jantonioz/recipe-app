@@ -27,11 +27,15 @@
 						size="14"
 					></v-rating>
 
-					<div class="grey--text ml-4">
+					<div class="grey--text ml-4 mr-3">
 						{{ item.rateAvg.toFixed(1) }} ({{
 							(item.rates || []).length.toFixed(0) || 0
 						}})
 					</div>
+					•
+					<span class="ml-3 blue--text"
+						>{{ item.author.fullName || item.author.name }}
+					</span>
 				</v-row>
 
 				<div class="my-4 subtitle-1"># • {{ item.tags.join(', ') }}</div>
@@ -49,6 +53,20 @@
 			<v-card-title>Comentarios</v-card-title>
 
 			<v-card-text>
+				<v-fab-transition>
+					<v-btn
+						v-show="!hidden"
+						color="green ligthen-1"
+						dark
+						fixed
+						bottom
+						right
+						fab
+						@click="edit"
+					>
+						<v-icon>mdi-pencil</v-icon>
+					</v-btn>
+				</v-fab-transition>
 				<v-list v-for="rate in item.rates" :key="rate._id">
 					<v-divider></v-divider>
 					<v-list-item two-line>
@@ -111,6 +129,7 @@
 <script>
 import moment from 'moment'
 import CardRecipeDetailComment from './CardRecipeDetailComment'
+import { mapGetters } from 'vuex'
 
 export default {
 	props: {
@@ -125,14 +144,29 @@ export default {
 			4: 'Muy bueno!',
 			5: 'Excelente!',
 		},
+		hidden: true,
 	}),
+	computed: {
+		...mapGetters('user', {
+			user: 'getUser',
+		}),
+	},
 	components: {
 		CardRecipeDetailComment,
 	},
-	mounted() {},
+	mounted() {
+		if (this.item && this.user.name) {
+			if (this.item.author._id === this.user.id) {
+				this.hidden = false
+			}
+		}
+	},
 	methods: {
 		createdAt() {
 			return moment.utc(this.item.createdAt).format('LLLL')
+		},
+		edit: function() {
+			this.$router.push(`${this.$route.path}/edit/`)
 		},
 	},
 }
