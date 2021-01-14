@@ -49,6 +49,9 @@
 						</v-form>
 					</v-card-text>
 					<v-card-actions>
+						<v-btn color="primary lighten-2" @click="goLogin"
+							>Back to login</v-btn
+						>
 						<v-spacer></v-spacer>
 						<v-btn color="primary" @click="register">Register</v-btn>
 					</v-card-actions>
@@ -76,10 +79,10 @@ export default {
 	}),
 	computed: {
 		...mapGetters('user', {
-			user: 'getUser'
-		})
+			user: 'getUser',
+		}),
 	},
-	mounted(){
+	mounted() {
 		if (this.user.name) {
 			this.$router.push('/')
 		}
@@ -115,6 +118,9 @@ export default {
 				throw this.error
 			}
 		},
+		goLogin: function() {
+			this.$router.push('/login')
+		}
 	},
 	watch: {
 		credentials() {
