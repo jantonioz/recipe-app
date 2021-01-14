@@ -3,7 +3,7 @@
 		class="mx-auto my-2 col-6"
 		:max-width="maxWidth"
 		v-if="item.rateAvg || recipe"
-		max-height="600"
+		max-height="750"
 	>
 		<template slot="progress">
 			<v-progress-linear
@@ -38,8 +38,8 @@
 
 			<div class="my-4 subtitle-1">$ • {{ item.tags.join(', ') }}</div>
 
-			<div class="text-truncate">
-				{{ item.body }}
+			<div class="text-body">
+				{{ item.body.substring(0, 150) + '...' }}
 			</div>
 		</v-card-text>
 

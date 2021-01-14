@@ -30,8 +30,15 @@ export default {
 			item: 'getSelected',
 		}),
 	},
-	mounted() {
-		this.$store.dispatch('recipes/setDetail', this.$route.params.id)
+	watch: {
+		item(i) {
+			if (this.item._id !== i._id) {
+				console.log('a')
+			}
+		}
+	},
+	async mounted() {
+		await this.$store.dispatch('recipes/setDetail', this.$route.params.id)
 		this.loading = false
 	},
 	methods: {

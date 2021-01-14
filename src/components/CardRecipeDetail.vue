@@ -150,9 +150,22 @@ export default {
 		...mapGetters('user', {
 			user: 'getUser',
 		}),
+		...mapGetters('recipes', {
+			selected: 'getSelected',
+		}),
+	},
+	watch: {
+		selected(sel) {
+			if (this.item._id !== sel._id) {
+				console.log('a2')
+			}
+		},
 	},
 	components: {
 		CardRecipeDetailComment,
+	},
+	async created() {
+		await this.$store.dispatch('recipes/setDetail', this.$route.params.id)
 	},
 	mounted() {
 		if (this.item && this.user.name) {
@@ -166,6 +179,12 @@ export default {
 			return moment.utc(this.item.createdAt).format('LLLL')
 		},
 		edit: function() {
+			if (
+				this.item._id !== this.sel._id ||
+				this.item._id !== this.$route.params.id
+			) {
+				console.log('a2')
+			}
 			this.$router.push(`/recipes/edit/${this.$route.params.id}`)
 		},
 	},
