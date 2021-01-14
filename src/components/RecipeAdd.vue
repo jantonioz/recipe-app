@@ -66,6 +66,10 @@
 			<strong>{{ error.code }}</strong> {{ error.message }}
 		</v-alert>
 		<v-card-actions class="d-flex justify-end">
+			<v-btn class="orange lighten-1" text dark @click="cancel">
+				Cancel
+			</v-btn>
+			<v-divider></v-divider>
 			<v-btn class="green darken-1" text dark @click="add">
 				Add
 			</v-btn>
@@ -121,6 +125,9 @@ export default {
 				this.error = error
 			}
 		},
+		cancel: function() {
+			this.$router.push('/')
+		}
 	},
 }
 </script>
