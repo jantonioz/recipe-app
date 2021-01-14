@@ -117,17 +117,20 @@ export default {
 					body: this.prodecure,
 				})
 				this.loading = false
-				await this.$store.dispatch('recipes/setDetail', result._id)
+				await this.$store.dispatch('recipes/setDetail', result.recipe._id)
 				this.$router.push(`/recipes/view/${result._id}`)
 			} catch (error) {
 				this.loading = false
 				console.log(error)
-				this.error = error
+				this.error = {
+					code: error.code || 'Wait!',
+					message: error.message || 'Bad request',
+				}
 			}
 		},
 		cancel: function() {
 			this.$router.push('/')
-		}
+		},
 	},
 }
 </script>
