@@ -23,8 +23,8 @@
 			<v-list>
 				<v-list-item>
 					<v-list-item-avatar>
-						<v-avatar size="96" class="blue justify-center" dark>
-							<span class="white--text">{{
+						<v-avatar size="96" class="blue justify-start" dark>
+							<span class="white--text ml-2">{{
 								user.fullName
 									.split(' ')
 									.map((e) => e.toUpperCase().charAt(0))
