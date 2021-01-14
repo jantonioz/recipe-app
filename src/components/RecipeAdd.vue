@@ -48,8 +48,8 @@
 				</v-col>
 			</v-row>
 			<v-combobox
-				v-model="ingredents"
-				:items="ingredentsItems"
+				v-model="ingredients"
+				:items="ingredientsItems"
 				chips
 				multiple
 				outlined
@@ -62,6 +62,9 @@
 				v-model="prodecure"
 			></v-textarea>
 		</v-card-text>
+		<v-alert dense outlined type="error" v-if="error.code">
+			<strong>{{ error.code }}</strong> {{ error.message }}
+		</v-alert>
 		<v-card-actions class="d-flex justify-end">
 			<v-btn class="green darken-1" text dark @click="add">
 				Add
@@ -81,13 +84,14 @@ export default {
 		prodecure: '',
 		tags: [],
 		tagsItems: [],
-		ingredents: [],
-		ingredentsItems: [],
+		ingredients: [],
+		ingredientsItems: [],
 		items: [],
 		select: null,
 		search: null,
 		slider: 1,
-		loading: false
+		loading: false,
+		error: {},
 	}),
 	watch: {
 		tags(e) {
@@ -98,16 +102,23 @@ export default {
 		},
 	},
 	methods: {
-		async add() {
+		add: async function() {
 			this.loading = true
-			await this.$store.dispatch('recipes/addRecipe', {
-				title: this.title,
-				tags: this.tags,
-				ingredients: this.ingredents,
-				level: this.slider,
-				body: this.prodecure,
-			})
-			this.loading = false
+			try {
+				await this.$store.dispatch('recipes/addRecipe', {
+					title: this.title,
+					tags: this.tags,
+					ingredients: this.ingredients,
+					level: this.slider,
+					body: this.prodecure,
+				})
+				this.loading = false
+				this.$router.push('/profile')
+			} catch (error) {
+				this.loading = false
+				console.log(error)
+				this.error = error
+			}
 		},
 	},
 }
