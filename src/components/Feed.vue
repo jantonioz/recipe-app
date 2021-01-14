@@ -1,10 +1,18 @@
 <template>
 	<v-container>
 		<v-fab-transition>
-			<v-btn color="green" dark fixed bottom right fab @click="top"
-				><v-icon>
+			<v-btn color="blue" dark fixed bottom left fab @click="top"
+				><v-icon >
 					mdi-chevron-up
 				</v-icon>
+			</v-btn>
+		</v-fab-transition>
+		<v-fab-transition>
+			<v-btn color="green" dark fixed bottom right rounded @click="addNew"
+				><v-icon>
+					mdi-plus
+				</v-icon>
+				Add new
 			</v-btn>
 		</v-fab-transition>
 		<v-row justify="center">
@@ -42,6 +50,9 @@ export default {
 		top() {
 			window.scrollTo(0, 0)
 		},
+		addNew: function() {
+			this.$router.push('/recipes/add')
+		}
 	},
 	async mounted() {
 		await this.$store.dispatch('recipes/getAllRecipes', this.token)
