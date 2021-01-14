@@ -13,7 +13,7 @@
 
 			<v-app-bar-title>{{ title }}</v-app-bar-title>
 		</div>
-		<v-spacer></v-spacer>
+		<v-spacer ></v-spacer>
 		<v-autocomplete
 			v-model="select"
 			:loading="loading"
@@ -32,7 +32,7 @@
 			flat
 			hide-no-data
 			item-color="secondary"
-			v-if="items"
+			v-if="items && !mobile"
 		>
 			<template v-slot:item="{ item }" dark>
 				<v-list-item-content @click="onClick">
@@ -41,12 +41,41 @@
 			</template>
 		</v-autocomplete>
 
+		<template v-slot:extension>
+			<v-autocomplete
+				v-model="select"
+				:loading="loading"
+				:items="items"
+				:search-input.sync="search"
+				cache-items
+				class="search-bar"
+				label="Buscar..."
+				clearable
+				hide-details
+				rounded
+				solo-inverted
+				hint="Buscar..."
+				color="#000"
+				dense
+				flat
+				hide-no-data
+				item-color="secondary"
+				v-if="items"
+			>
+				<template v-slot:item="{ item }" dark>
+					<v-list-item-content @click="onClick">
+						<v-list-item-title v-text="item"></v-list-item-title>
+					</v-list-item-content>
+				</template>
+			</v-autocomplete>
+		</template>
+
 		<v-btn href="/login" target="_blank" text v-if="!user.name">
 			<span class="mr-2">Iniciar sesión</span>
 			<v-icon>mdi-login</v-icon>
 		</v-btn>
 
-		<AppbarMenuAccount />
+		<AppbarMenuAccount v-if="!mobile" />
 
 		<v-btn @click="logout" target="_blank" text v-if="user.name" dense>
 			<v-icon>mdi-logout</v-icon>
@@ -57,6 +86,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import { isMobile, isTablet } from 'mobile-device-detect'
 import AppbarMenuAccount from './AppbarMenuAccount'
 
 export default {
@@ -65,13 +95,14 @@ export default {
 		title: String,
 	},
 	components: {
-		AppbarMenuAccount
+		AppbarMenuAccount,
 	},
 	data: () => ({
 		loading: false,
 		items: [],
 		search: null,
 		select: null,
+		mobile: isMobile || isTablet,
 	}),
 	computed: {
 		...mapGetters('recipes', {
@@ -88,7 +119,7 @@ export default {
 		search(val) {
 			val && val !== this.select && this.querySelections(val)
 			// console.log('val', val)
-		}
+		},
 	},
 	methods: {
 		querySelections(v) {

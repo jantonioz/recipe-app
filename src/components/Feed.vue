@@ -15,7 +15,7 @@
 				Add new
 			</v-btn>
 		</v-fab-transition>
-		<v-row justify="center">
+		<v-row justify="center" v-if="!mobile">
 			<v-col cols="4">
 				<ListFeed :colIndex="0" :list="feedLists[0]" />
 			</v-col>
@@ -31,10 +31,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile, isTablet } from 'mobile-device-detect'
 import ListFeed from './ListFeed'
 
 export default {
 	name: 'Feed',
+	data: () => ({
+		mobile: isMobile || isTablet
+	}),
 	components: {
 		ListFeed,
 	},
@@ -44,6 +48,9 @@ export default {
 		}),
 		...mapGetters('user', {
 			token: 'getToken'
+		}),
+		...mapGetters('recipes', {
+			feed: 'getAll'
 		})
 	},
 	methods: {
