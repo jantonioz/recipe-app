@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex, { createLogger } from 'vuex'
-// import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate'
 
 import recipes from './modules/recipes'
 import user from './modules/user'
@@ -17,5 +17,7 @@ export default new Vuex.Store({
 		drawer,
 	},
 	strict: debug,
-	plugins: debug ? [createLogger()] : [],
+	plugins: debug
+		? [createLogger(), createPersistedState()]
+		: [createPersistedState()],
 })
