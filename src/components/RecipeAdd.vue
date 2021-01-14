@@ -105,7 +105,7 @@ export default {
 		add: async function() {
 			this.loading = true
 			try {
-				await this.$store.dispatch('recipes/addRecipe', {
+				const result = await this.$store.dispatch('recipes/addRecipe', {
 					title: this.title,
 					tags: this.tags,
 					ingredients: this.ingredients,
@@ -113,7 +113,8 @@ export default {
 					body: this.prodecure,
 				})
 				this.loading = false
-				this.$router.push('/profile')
+				await this.$store.dispatch('recipes/setDetail', result._id)
+				this.$router.push(`/recipes/view/${result._id}`)
 			} catch (error) {
 				this.loading = false
 				console.log(error)

@@ -66,6 +66,13 @@
 			<strong>{{ error.code }}</strong> {{ error.message }}
 		</v-alert>
 		<v-card-actions class="d-flex justify-end">
+			<v-btn class="red darken-1" text dark @click="dialog = true">
+				Delete
+			</v-btn>
+			<v-spacer></v-spacer>
+			<v-btn class="orange darken-1 mr-6" text dark @click="cancel">
+				Cancel
+			</v-btn>
 			<v-btn class="green darken-1" text dark @click="update">
 				Edit
 			</v-btn>
@@ -73,6 +80,32 @@
 		<v-overlay :value="loading">
 			<v-progress-circular indeterminate size="64"></v-progress-circular>
 		</v-overlay>
+		<v-dialog v-model="dialog" width="500">
+			<v-card>
+				<v-card-title class="headline red darken-1 white--text">
+					Alert you are deleting {{ title }}
+				</v-card-title>
+
+				<v-card-text class="mt-2">
+					You sure you want to delete "{{ title }}"?
+
+					<br />
+					This action will permanently delete this recipe.
+				</v-card-text>
+
+				<v-divider></v-divider>
+
+				<v-card-actions>
+					<v-btn color="orange lighten-1" text @click="dialog = false">
+						No, cancel
+					</v-btn>
+					<v-spacer></v-spacer>
+					<v-btn color="red lighten-1" text @click="_delete">
+						Yes, delete it
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</v-card>
 </template>
 
@@ -81,7 +114,7 @@ import { mapGetters } from 'vuex'
 export default {
 	props: {},
 	data: () => ({
-    id: '',
+		id: '',
 		title: '',
 		prodecure: '',
 		tags: [],
@@ -94,6 +127,7 @@ export default {
 		slider: 1,
 		loading: true,
 		error: {},
+		dialog: false,
 	}),
 	watch: {
 		tags(e) {
@@ -101,44 +135,62 @@ export default {
 		},
 		ingredents(e) {
 			this.ingredentsItems = e
-    },
-    recipe(r) {
-      if (r && r.title) {
-        this.id = r._id || r.id
-        this.title = r.title
-        this.prodecure = r.body
-        this.ingredients = r.ingredients
-        this.ingredientsItems = r.ingredients
-        this.tags = r.tags
-        this.tagsItems = r.tagsItems
-        this.slider = r.level
-        this.loading = false
-      }
-    }
-  },
-  computed: {
-    ...mapGetters('recipes', {
-      recipe: 'getSelected',
-    })
-  },
+		},
+		recipe(r) {
+			if (r && r.title) {
+				this.id = r._id || r.id
+				this.title = r.title
+				this.prodecure = r.body
+				this.ingredients = r.ingredients
+				this.ingredientsItems = r.ingredients
+				this.tags = r.tags
+				this.tagsItems = r.tagsItems
+				this.slider = r.level
+				this.loading = false
+			}
+		},
+	},
+	computed: {
+		...mapGetters('recipes', {
+			recipe: 'getSelected',
+		}),
+	},
 	mounted() {
-    this.$store.dispatch('recipes/setDetail', this.$route.params.id)
+		this.$store.dispatch('recipes/setDetail', this.$route.params.id)
 	},
 	methods: {
 		update: async function() {
 			this.loading = true
 			try {
 				await this.$store.dispatch('recipes/edit', {
-          id: this.id,
+					id: this.id,
 					title: this.title,
 					tags: this.tags,
 					ingredients: this.ingredients,
 					level: this.slider,
 					body: this.prodecure,
 				})
-        this.loading = false
-        await this.$store.dispatch('recipes/setDetail', this.id)
+				this.loading = false
+				await this.$store.dispatch('recipes/setDetail', this.id)
 				this.$router.push(`/recipes/${this.id}`)
+			} catch (error) {
+				this.loading = false
+				console.log(error)
+				this.error = error
+			}
+		},
+		cancel: async function() {
+			await this.$store.dispatch('recipes/setDetail', this.id)
+			this.$router.push(`/recipes/view/${this.id}`)
+		},
+		_delete: async function() {
+			this.loading = true
+			try {
+				await this.$store.dispatch('recipes/delete', {
+					id: this.id,
+				})
+				this.loading = false
+				this.$router.push(`/`)
 			} catch (error) {
 				this.loading = false
 				console.log(error)

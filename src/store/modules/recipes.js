@@ -47,6 +47,11 @@ const actions = {
 		commit('setDetail', recipe)
 		return result
 	},
+	async delete({commit}, recipe) {
+		const result = await api.deleteRecipe(recipe)
+		commit('setDetail', {})
+		return result
+	},
 }
 
 const mutations = {
