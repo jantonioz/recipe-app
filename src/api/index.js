@@ -99,6 +99,19 @@ class API {
 			}
 		}
 	}
+
+	async editRecipe(recipe, token) {
+		this.updateToken(token)
+		try {
+			const { data } = await this.api.put(`/recipes/${recipe.id}`, recipe)
+			return data
+		} catch (error) {
+			throw {
+				code: error.response.data.code || 401,
+				message: error.response.data.message || 'Invalid credentials',
+			}
+		}
+	}
 }
 
 export default new API()

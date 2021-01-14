@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Feed from '../components/Feed'
 import RecipeDetail from '../components/RecipeDetail'
 import RecipeAdd from '../components/RecipeAdd'
+import RecipeEdit from '../components/RecipeEdit'
 import Profile from '../components/Profile'
 import Login from '../components/LoginPage'
 import Register from '../components/RegisterPage'
@@ -19,6 +20,11 @@ const routes = [
     path: '/recipe/:id',
     name: 'RecipeDetail',
     component: RecipeDetail
+  },
+  {
+    path: '/recipes/edit/:id',
+    name: 'RecipeEdit',
+    component: RecipeEdit
   },
   {
     path: '/recipes/add',

@@ -42,6 +42,11 @@ const actions = {
 		const result = await api.addRecipe(recipe)
 		return result
 	},
+	async edit({commit}, recipe) {
+		const result = await api.editRecipe(recipe)
+		commit('setDetail', recipe)
+		return result
+	},
 }
 
 const mutations = {

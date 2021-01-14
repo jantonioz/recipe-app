@@ -166,7 +166,7 @@ export default {
 			return moment.utc(this.item.createdAt).format('LLLL')
 		},
 		edit: function() {
-			this.$router.push(`${this.$route.path}/edit/`)
+			this.$router.push(`/recipes/edit/${this.$route.params.id}`)
 		},
 	},
 }
