@@ -50,6 +50,7 @@
 
 			<v-card-text>
 				<v-list v-for="rate in item.rates" :key="rate._id">
+					<v-divider></v-divider>
 					<v-list-item two-line>
 						<v-list-item-content>
 							<v-list-item-subtitle>
@@ -66,7 +67,7 @@
 								{{ rate.author.fullName }} - {{ createdAt() }}
 							</v-list-item-subtitle>
 							<v-col>
-								<v-row class="ml-2">
+								<v-row>
 									<v-col md="auto">
 										<v-rating
 											hover
@@ -85,16 +86,18 @@
 									</v-col>
 								</v-row>
 
-								<v-textarea
+								<p
+									class="text-body-1"
 									readonly
-									:value="rate.comment"
 									flat
 									dense
 									auto-grow
 									no-resize
 									rounded
 									solo
-								></v-textarea>
+								>
+									{{ rate.comment }}
+								</p>
 							</v-col>
 						</v-list-item-content>
 					</v-list-item>
