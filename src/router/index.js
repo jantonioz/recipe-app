@@ -5,6 +5,7 @@ import RecipeDetail from '../components/RecipeDetail'
 import RecipeAdd from '../components/RecipeAdd'
 import Profile from '../components/Profile'
 import Login from '../components/LoginPage'
+import Register from '../components/RegisterPage'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ]
 

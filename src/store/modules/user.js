@@ -21,13 +21,29 @@ const actions = {
 	async login({ commit }, { username, password }) {
 		try {
 			const { user, token } = await api.login(username, password)
-			console.log('actions.login', token)
+			console.log('actions.login', user, token)
 			commit('setUser', user)
 			commit('setToken', token)
 			return user
 		} catch (error) {
 			commit('setUser', {})
 			return error
+		}
+	},
+	async register({ commit }, credentials) {
+		try {
+			const result = await api.register(credentials)
+			const { user, token } = await api.login(
+				credentials.username,
+				credentials.password
+			)
+			console.log('actions.register', result)
+			commit('setUser', user)
+			commit('setToken', token)
+			return result
+		} catch (error) {
+			commit('setUser', null)
+			throw error
 		}
 	},
 	setToken({ commit }, token) {
@@ -57,7 +73,8 @@ const mutations = {
 		state.token = token
 	},
 	logout(state) {
-		state.user = null
+		state.user = {}
+		state.token = ''
 	},
 	updateUser(state, user) {
 		state.user = user

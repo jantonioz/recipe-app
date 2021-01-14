@@ -13,6 +13,26 @@ class API {
 		try {
 			const { data } = await this.api.post('/login', { username, password })
 			if (data.token) {
+				this.user = this.updateToken(data.token)
+			}
+			return { user: this.user, token: data.token }
+		} catch (error) {
+			throw {
+				code: error.response.data.code || 401,
+				message: error.response.data.message || 'Invalid credentials',
+			}
+		}
+	}
+
+	async register({ fullName, email, username, password }) {
+		try {
+			const { data } = await this.api.post('/register', {
+				fullName,
+				email,
+				username,
+				password,
+			})
+			if (data.token) {
 				this.updateToken(data.token)
 			}
 			return { user: this.user, token: data.token }
@@ -37,13 +57,13 @@ class API {
 		}
 	}
 
-	updateToken() {
-		this.token = store.getters['user/getToken']
+	updateToken(token) {
+		this.token = token || store.getters['user/getToken']
 		this.api = axios.create({
 			baseURL: 'http://localhost:3090/api',
 			headers: { Authorization: `Bearer ${this.token}` },
 		})
-		this.user = jwt.decode(this.token)
+		return jwt.decode(this.token)
 	}
 
 	async getAllRecipes(token) {
@@ -69,8 +89,15 @@ class API {
 
 	async addRecipe(recipe, token) {
 		this.updateToken(token)
-		const { data } = await this.api.post(`/recipes`, recipe)
-		return data
+		try {
+			const { data } = await this.api.post(`/recipes`, recipe)
+			return data
+		} catch (error) {
+			throw {
+				code: error.response.data.code || 401,
+				message: error.response.data.message || 'Invalid credentials',
+			}
+		}
 	}
 }
 
