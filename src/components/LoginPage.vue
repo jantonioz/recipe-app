@@ -30,8 +30,17 @@
 						</v-form>
 					</v-card-text>
 					<v-card-actions>
+						<v-btn
+							class="ml-3 mb-3"
+							color="white green--text"
+							elevation="0"
+							@click="register"
+							>Register</v-btn
+						>
 						<v-spacer></v-spacer>
-						<v-btn color="primary" @click="login">Iniciar sesión</v-btn>
+						<v-btn class="mr-3 mb-3" color="primary" @click="login"
+							>Login</v-btn
+						>
 					</v-card-actions>
 				</v-card>
 			</v-flex>
@@ -63,6 +72,9 @@ export default {
 				this.$router.push('/')
 			}
 		},
+		register() {
+			this.$router.push('/register')
+		}
 	},
 }
 </script>
