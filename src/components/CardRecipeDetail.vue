@@ -43,9 +43,8 @@
 				<div v-for="ing of item.ingredients" :key="ing" class="ml-3" dense flat>
 					<span>• {{ ing }} </span>
 				</div>
-				<div class="mt-6 text-body-1">
-					{{ item.body }}
-				</div>
+				<v-textarea class="mt-6 text-body-1" flat solo readonly auto-grow :value="item.body">
+				</v-textarea>
 			</v-card-text>
 
 			<v-divider class="mx-4"></v-divider>
@@ -180,7 +179,7 @@ export default {
 		},
 		edit: function() {
 			if (
-				this.item._id !== this.sel._id ||
+				this.item._id !== this.selected._id ||
 				this.item._id !== this.$route.params.id
 			) {
 				console.log('a2')
