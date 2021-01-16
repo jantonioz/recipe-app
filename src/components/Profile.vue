@@ -1,8 +1,8 @@
 <template>
 	<v-container class="d-flex justify-center mt-5" align-content="center">
 		<v-row justify="center">
-			<v-col> </v-col>
-			<v-col cols="8">
+			<v-col v-if="!mobile"> </v-col>
+			<v-col :cols="mobile ? '12' : '8'">
 				<v-card outlined>
 					<v-card-text>
 						<v-row class="d-flex align-start">
@@ -50,13 +50,15 @@
 					</v-card-actions>
 				</v-card>
 			</v-col>
-			<v-col></v-col>
+			<v-col v-if="!mobile"></v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { isMobile, isTablet } from 'mobile-device-detect'
+
 export default {
 	pageTitle: 'My Profile',
 	components: {},
@@ -68,6 +70,7 @@ export default {
 			fullName: '',
 			email: '',
 			username: '',
+			mobile: isMobile || isTablet,
 		}
 	},
 	computed: {

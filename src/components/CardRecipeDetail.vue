@@ -43,7 +43,7 @@
 				<div v-for="ing of item.ingredients" :key="ing" class="ml-3" dense flat>
 					<span>• {{ ing }} </span>
 				</div>
-				<v-textarea class="mt-6 text-body-1" flat solo readonly auto-grow :value="item.body">
+				<v-textarea class="mt-6 text-body-1" flat solo readonly auto-grow hide-details="" :value="item.body">
 				</v-textarea>
 			</v-card-text>
 
