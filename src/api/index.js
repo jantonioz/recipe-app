@@ -2,10 +2,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import store from '../store'
 
-import dotenv from 'dotenv'
-dotenv.config()
-
-const baseURL = process.env.API_BASE_URL
+const baseURL = process.env.VUE_APP_API_BASE_URL
 
 class API {
 	constructor() {
