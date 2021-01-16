@@ -49,7 +49,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'abstract',
+  mode: 'hash',
   base: '/',
   routes
 })
