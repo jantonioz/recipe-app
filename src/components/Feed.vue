@@ -1,7 +1,5 @@
 <template>
 	<v-container>
-		{{ mobile ? 'mobil' : 'no mobil' }}
-		{{ feed }}
 		<v-fab-transition>
 			<v-btn color="blue" dark fixed bottom left fab @click="top"
 				><v-icon>
