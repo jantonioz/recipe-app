@@ -2,9 +2,14 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import store from '../store'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
+const baseURL = process.env.API_BASE_URL
+
 class API {
 	constructor() {
-		this.api = axios.create({ baseURL: 'http://localhost:3090/api' })
+		this.api = axios.create({ baseURL })
 		this.user = null
 		this.token = null
 	}
@@ -60,7 +65,7 @@ class API {
 	updateToken(token) {
 		this.token = token || store.getters['user/getToken']
 		this.api = axios.create({
-			baseURL: 'http://192.168.1.183:3090/api',
+			baseURL,
 			headers: { Authorization: `Bearer ${this.token}` },
 		})
 		return jwt.decode(this.token)
