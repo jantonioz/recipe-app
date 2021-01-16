@@ -70,7 +70,7 @@ export default {
 					password: this.credentials.password,
 				})
 				console.log('LoginPage', result)
-				if (!result.name) {
+				if (result.name) {
 					this.$router.push('/home')
 				}
 			} catch (error) {
