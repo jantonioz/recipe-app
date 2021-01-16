@@ -17,6 +17,11 @@ const routes = [
     component: Feed
   },
   {
+    path: '/home',
+    name: 'Feed',
+    component: Feed
+  },
+  {
     path: '/recipes/view/:id',
     name: 'RecipeDetail',
     component: RecipeDetail

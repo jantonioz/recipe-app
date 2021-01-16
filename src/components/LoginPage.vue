@@ -71,7 +71,7 @@ export default {
 				})
 				console.log('LoginPage', result)
 				if (!result.name) {
-					this.$router.push('/')
+					this.$router.push('/home')
 				}
 			} catch (error) {
 				console.log('login', error)
