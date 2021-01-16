@@ -60,7 +60,7 @@ class API {
 	updateToken(token) {
 		this.token = token || store.getters['user/getToken']
 		this.api = axios.create({
-			baseURL: 'http://localhost:3090/api',
+			baseURL: 'http://192.168.1.183:3090/api',
 			headers: { Authorization: `Bearer ${this.token}` },
 		})
 		return jwt.decode(this.token)

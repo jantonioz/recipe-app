@@ -27,7 +27,7 @@ const actions = {
 			return user
 		} catch (error) {
 			commit('setUser', {})
-			return error
+			throw error
 		}
 	},
 	async register({ commit }, credentials) {

@@ -41,7 +41,7 @@
 			</template>
 		</v-autocomplete>
 
-		<template v-slot:extension>
+		<template v-slot:extension v-if="mobile">
 			<v-autocomplete
 				v-model="select"
 				:loading="loading"
@@ -61,6 +61,7 @@
 				hide-no-data
 				item-color="secondary"
 				v-if="items"
+				full-width
 			>
 				<template v-slot:item="{ item }" dark>
 					<v-list-item-content @click="onClick">

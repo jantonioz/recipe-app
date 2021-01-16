@@ -1,8 +1,10 @@
 <template>
 	<v-container>
+		{{ mobile ? 'mobil' : 'no mobil' }}
+		{{ feed }}
 		<v-fab-transition>
 			<v-btn color="blue" dark fixed bottom left fab @click="top"
-				><v-icon >
+				><v-icon>
 					mdi-chevron-up
 				</v-icon>
 			</v-btn>
@@ -26,6 +28,9 @@
 				<ListFeed :colIndex="2" :list="feedLists[2]" />
 			</v-col>
 		</v-row>
+		<v-row v-else>
+			<ListFeed :colIndex="2" :list="feed" />
+		</v-row>
 	</v-container>
 </template>
 
@@ -37,7 +42,7 @@ import ListFeed from './ListFeed'
 export default {
 	name: 'Feed',
 	data: () => ({
-		mobile: isMobile || isTablet
+		mobile: isMobile || isTablet,
 	}),
 	components: {
 		ListFeed,
@@ -47,11 +52,11 @@ export default {
 			feedLists: 'getFeeds',
 		}),
 		...mapGetters('user', {
-			token: 'getToken'
+			token: 'getToken',
 		}),
 		...mapGetters('recipes', {
-			feed: 'getAll'
-		})
+			feed: 'getAll',
+		}),
 	},
 	methods: {
 		top() {
@@ -59,7 +64,7 @@ export default {
 		},
 		addNew: function() {
 			this.$router.push('/recipes/add')
-		}
+		},
 	},
 	async mounted() {
 		await this.$store.dispatch('recipes/getAllRecipes', this.token)

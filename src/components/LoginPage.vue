@@ -64,16 +64,18 @@ export default {
 	methods: {
 		login: async function() {
 			if (!this || !this.credentials) return
-			const result = await this.$store.dispatch('user/login', {
-				username: this.credentials.username,
-				password: this.credentials.password,
-			})
-			console.log('LoginPage', result)
-			if (!result.name) {
-				console.log('login', result)
-				this.error = result || { code: 'Hey!', message: 'Invalid credentials' }
-			} else {
-				this.$router.push('/')
+			try {
+				const result = await this.$store.dispatch('user/login', {
+					username: this.credentials.username,
+					password: this.credentials.password,
+				})
+				console.log('LoginPage', result)
+				if (!result.name) {
+					this.$router.push('/')
+				}
+			} catch (error) {
+				console.log('login', error)
+				this.error = error || { code: 'Hey!', message: 'Invalid credentials' }
 			}
 		},
 		register() {
