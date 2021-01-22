@@ -9,9 +9,18 @@
 		</template>
 
 		<v-img
+			v-if="!previews || !previews.length"
 			height="250"
 			src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
 		></v-img>
+
+		<v-carousel v-if="previews && previews.length" hide-delimiters>
+			<v-carousel-item
+				v-for="(preview, i) in previews"
+				:key="i"
+				:src="getPreviewSrc(preview)"
+			></v-carousel-item>
+		</v-carousel>
 
 		<v-card-title>
 			<v-text-field flat outlined placeholder="Titulo" v-model="title">
@@ -61,6 +70,35 @@
 				label="Procedure"
 				v-model="prodecure"
 			></v-textarea>
+			<v-file-input
+				v-model="files"
+				ref="file"
+				color="green darken-2"
+				counter
+				label="Previews"
+				multiple
+				outlined
+				:shadow-size="100"
+				@change="selectFiles"
+				type="file"
+			>
+				<template v-slot:selection="{ index, text }">
+					<v-chip v-if="index < 2" color="green darken-2" dark label small>
+						{{ text }}
+					</v-chip>
+
+					<span
+						v-else-if="index === 2"
+						class="overline grey--text text--darken-3 mx-2"
+					>
+						+{{ files.length - 2 }} File(s)
+					</span>
+				</template>
+			</v-file-input>
+			<v-progress-linear
+				v-if="progress > 0"
+				:value="progress"
+			></v-progress-linear>
 		</v-card-text>
 		<v-alert dense outlined type="error" v-if="error.code">
 			<strong>{{ error.code }}</strong> {{ error.message }}
@@ -73,7 +111,7 @@
 			<v-btn class="orange darken-1 mr-6" text dark @click="cancel">
 				Cancel
 			</v-btn>
-			<v-btn class="green darken-1" text dark @click="update">
+			<v-btn class="green darken-1" text dark @click="upload">
 				Edit
 			</v-btn>
 		</v-card-actions>
@@ -110,6 +148,7 @@
 </template>
 
 <script>
+import API from '../api'
 import { mapGetters } from 'vuex'
 export default {
 	props: {},
@@ -128,6 +167,10 @@ export default {
 		loading: true,
 		error: {},
 		dialog: false,
+		files: [],
+		selectedFiles: [],
+		progress: 0,
+		fileNames: [],
 	}),
 	watch: {
 		tags(e) {
@@ -146,6 +189,7 @@ export default {
 				this.tags = r.tags
 				this.tagsItems = r.tagsItems
 				this.slider = r.level
+				this.previews = r.previews
 				this.loading = false
 			}
 		},
@@ -159,6 +203,13 @@ export default {
 		this.$store.dispatch('recipes/setDetail', this.$route.params.id)
 	},
 	methods: {
+		getPreviewSrc(preview) {
+			const str = process.env.VUE_APP_API_BASE_URL
+			const base = str.substr(0, str.length - 3)
+			const fullURL = `${base}content/previews/${preview}`
+			// console.log(fullURL)
+			return fullURL
+		},
 		update: async function() {
 			this.loading = true
 			try {
@@ -169,6 +220,7 @@ export default {
 					ingredients: this.ingredients,
 					level: this.slider,
 					body: this.prodecure,
+					previews: this.fileNames
 				})
 				this.loading = false
 				await this.$store.dispatch('recipes/setDetail', this.id)
@@ -178,6 +230,28 @@ export default {
 				console.log(error)
 				this.error = error
 			}
+		},
+		upload: async function() {
+			try {
+				this.loading = true
+				const formData = new FormData()
+				for (var i = 0; i < this.selectedFiles.length; i++) {
+					let file = this.selectedFiles[i]
+					formData.append('previews', file)
+				}
+				const response = await API.upload(formData, (event) => {
+					this.progress = Math.ceil((100 * event.loaded) / event.total)
+				})
+				this.fileNames = response.data
+				this.update()
+			} catch (error) {
+				this.error = { message: error.message, code: error.status || 1 }
+				this.loading = false
+			}
+		},
+		selectFiles: function(e) {
+			this.progress = 1
+			this.selectedFiles = e
 		},
 		cancel: async function() {
 			await this.$store.dispatch('recipes/setDetail', this.id)
