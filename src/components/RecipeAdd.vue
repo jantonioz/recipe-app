@@ -153,7 +153,7 @@ export default {
 				})
 				this.loading = false
 				await this.$store.dispatch('recipes/setDetail', result.recipe._id)
-				this.$router.push(`/recipes/view/${result._id}`)
+				this.$router.push(`/recipes/view/${result.recipe._id}`)
 			} catch (error) {
 				this.loading = false
 				console.log(error)
