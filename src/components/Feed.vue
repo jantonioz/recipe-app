@@ -8,7 +8,7 @@
 			</v-btn>
 		</v-fab-transition>
 		<v-fab-transition>
-			<v-btn color="green" dark fixed bottom right rounded @click="addNew"
+			<v-btn color="green" dark fixed bottom right rounded @click="addNew" style="z-index:999"
 				><v-icon>
 					mdi-plus
 				</v-icon>
