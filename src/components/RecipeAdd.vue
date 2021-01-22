@@ -61,6 +61,35 @@
 				label="Procedure"
 				v-model="prodecure"
 			></v-textarea>
+			<v-file-input
+				v-model="files"
+				ref="file"
+				color="green darken-2"
+				counter
+				label="Previews"
+				multiple
+				outlined
+				:shadow-size="100"
+				@change="selectFiles"
+				type="file"
+			>
+				<template v-slot:selection="{ index, text }">
+					<v-chip v-if="index < 2" color="green darken-2" dark label small>
+						{{ text }}
+					</v-chip>
+
+					<span
+						v-else-if="index === 2"
+						class="overline grey--text text--darken-3 mx-2"
+					>
+						+{{ files.length - 2 }} File(s)
+					</span>
+				</template>
+			</v-file-input>
+			<v-progress-linear
+				v-if="progress > 0"
+				:value="progress"
+			></v-progress-linear>
 		</v-card-text>
 		<v-alert dense outlined type="error" v-if="error.code">
 			<strong>{{ error.code }}</strong> {{ error.message }}
@@ -70,7 +99,7 @@
 				Cancel
 			</v-btn>
 			<v-divider></v-divider>
-			<v-btn class="green darken-1" text dark @click="add">
+			<v-btn class="green darken-1" text dark @click="upload">
 				Add
 			</v-btn>
 		</v-card-actions>
@@ -81,6 +110,8 @@
 </template>
 
 <script>
+import API from '../api'
+
 export default {
 	props: {},
 	data: () => ({
@@ -96,6 +127,10 @@ export default {
 		slider: 1,
 		loading: false,
 		error: {},
+		files: [],
+		selectedFiles: [],
+		progress: 0,
+		fileNames: [],
 	}),
 	watch: {
 		tags(e) {
@@ -106,8 +141,7 @@ export default {
 		},
 	},
 	methods: {
-		add: async function() {
-			this.loading = true
+		addRecipe: async function() {
 			try {
 				const result = await this.$store.dispatch('recipes/addRecipe', {
 					title: this.title,
@@ -115,6 +149,7 @@ export default {
 					ingredients: this.ingredients,
 					level: this.slider,
 					body: this.prodecure,
+					previews: this.fileNames
 				})
 				this.loading = false
 				await this.$store.dispatch('recipes/setDetail', result.recipe._id)
@@ -127,6 +162,28 @@ export default {
 					message: error.message || 'Bad request',
 				}
 			}
+		},
+		upload: async function() {
+			try {
+				this.loading = true
+				const formData = new FormData()
+				for (var i = 0; i < this.selectedFiles.length; i++) {
+					let file = this.selectedFiles[i]
+					formData.append('previews', file)
+				}
+				const response = await API.upload(formData, (event) => {
+					this.progress = Math.ceil((100 * event.loaded) / event.total)
+				})
+				this.fileNames = response.data
+				this.addRecipe()
+			} catch (error) {
+				this.error = { message: error.message, code: error.status || 1 }
+				this.loading = false
+			}
+		},
+		selectFiles: function(e) {
+			this.progress = 1
+			this.selectedFiles = e
 		},
 		cancel: function() {
 			this.$router.push('/')

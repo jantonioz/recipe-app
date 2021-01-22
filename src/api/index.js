@@ -11,6 +11,15 @@ class API {
 		this.token = null
 	}
 
+	async upload(formData, onUploadProgress) {
+		return this.api.post('/previews', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			},
+			onUploadProgress
+		})
+	}
+
 	async login(username, password) {
 		try {
 			const { data } = await this.api.post('/login', { username, password })
