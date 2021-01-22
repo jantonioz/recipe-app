@@ -10,9 +10,18 @@
 			</template>
 
 			<v-img
+				v-if="!item.previews || !item.previews.length"
 				height="250"
 				src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
 			></v-img>
+
+			<v-carousel v-if="item.previews && item.previews.length" hide-delimiters>
+				<v-carousel-item
+					v-for="(preview, i) in item.previews"
+					:key="i"
+					:src="getPreviewSrc(preview)"
+				></v-carousel-item>
+			</v-carousel>
 
 			<v-card-title>{{ item.title }}</v-card-title>
 
@@ -43,7 +52,15 @@
 				<div v-for="ing of item.ingredients" :key="ing" class="ml-3" dense flat>
 					<span>• {{ ing }} </span>
 				</div>
-				<v-textarea class="mt-6 text-body-1" flat solo readonly auto-grow hide-details="" :value="item.body">
+				<v-textarea
+					class="mt-6 text-body-1"
+					flat
+					solo
+					readonly
+					auto-grow
+					hide-details=""
+					:value="item.body"
+				>
 				</v-textarea>
 			</v-card-text>
 
@@ -185,6 +202,13 @@ export default {
 				console.log('a2')
 			}
 			this.$router.push(`/recipes/edit/${this.$route.params.id}`)
+		},
+		getPreviewSrc(preview) {
+			const str = process.env.VUE_APP_API_BASE_URL
+			const base = str.substr(0, str.length - 3)
+			const fullURL = `${base}content/previews/${preview}`
+			// console.log(fullURL)
+			return fullURL
 		},
 	},
 }
