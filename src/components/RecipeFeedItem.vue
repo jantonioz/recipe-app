@@ -14,9 +14,18 @@
 		</template>
 
 		<v-img
+			v-if="!item.previews || !item.previews.length"
 			height="250"
 			src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
 		></v-img>
+
+		<v-carousel v-if="item.previews && item.previews.length" hide-delimiters>
+			<v-carousel-item
+				v-for="(preview, i) in item.previews"
+				:key="i"
+				:src="getPreviewSrc(preview)"
+			></v-carousel-item>
+		</v-carousel>
 
 		<v-card-title>{{ item.title }}</v-card-title>
 
@@ -74,6 +83,13 @@ export default {
 		verMas() {
 			this.$store.dispatch('recipes/setDetail', this.item._id)
 			this.$router.push(`/recipes/view/${this.item._id}`)
+		},
+		getPreviewSrc(preview) {
+			const str = process.env.VUE_APP_API_BASE_URL
+			const base = str.substr(0, str.length - 3)
+			const fullURL = `${base}content/previews/${preview}`
+			// console.log(fullURL)
+			return fullURL
 		},
 	},
 }
