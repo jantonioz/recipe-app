@@ -61,9 +61,11 @@
 				label="Procedure"
 				v-model="prodecure"
 			></v-textarea>
+			<RecipeAddImagesPreview :images="this.previews" :onClick="removeImage" />
 			<v-file-input
 				v-model="files"
 				ref="file"
+				class="mt-2"
 				color="green darken-2"
 				counter
 				label="Previews"
@@ -88,6 +90,7 @@
 			</v-file-input>
 			<v-progress-linear
 				v-if="progress > 0"
+				class="mt-2"
 				:value="progress"
 			></v-progress-linear>
 		</v-card-text>
@@ -111,9 +114,13 @@
 
 <script>
 import API from '../api'
+import RecipeAddImagesPreview from './RecipeAddImagesPreview'
 
 export default {
 	props: {},
+	components: {
+		RecipeAddImagesPreview,
+	},
 	data: () => ({
 		title: '',
 		prodecure: '',
@@ -129,6 +136,7 @@ export default {
 		error: {},
 		files: [],
 		selectedFiles: [],
+		previews: [],
 		progress: 0,
 		fileNames: [],
 	}),
@@ -149,7 +157,7 @@ export default {
 					ingredients: this.ingredients,
 					level: this.slider,
 					body: this.prodecure,
-					previews: this.fileNames
+					previews: this.fileNames,
 				})
 				this.loading = false
 				await this.$store.dispatch('recipes/setDetail', result.recipe._id)
@@ -184,9 +192,21 @@ export default {
 		selectFiles: function(e) {
 			this.progress = 1
 			this.selectedFiles = e
+			this.previews = this.getPreviews()
 		},
 		cancel: function() {
 			this.$router.push('/')
+		},
+		removeImage: function(e) {
+			this.selectedFiles = this.selectedFiles.filter((_, idx) => idx !== e.idx)
+			this.files = this.selectedFiles
+			this.previews = this.getPreviews()
+		},
+		getPreviews() {
+			return this.selectedFiles.map((f, idx) => ({
+				idx,
+				src: URL.createObjectURL(f),
+			}))
 		},
 	},
 }
