@@ -70,10 +70,15 @@
 				label="Procedure"
 				v-model="prodecure"
 			></v-textarea>
+			<RecipeAddImagesPreview
+				:images="this.displayPreviews"
+				:onClick="removeImage"
+			/>
 			<v-file-input
 				v-model="files"
 				ref="file"
 				color="green darken-2"
+				class="mt-2"
 				counter
 				label="Previews"
 				multiple
@@ -150,8 +155,12 @@
 <script>
 import API from '../api'
 import { mapGetters } from 'vuex'
+import RecipeAddImagesPreview from './RecipeAddImagesPreview'
+
 export default {
-	props: {},
+	components: {
+		RecipeAddImagesPreview,
+	},
 	data: () => ({
 		id: '',
 		title: '',
@@ -171,6 +180,9 @@ export default {
 		selectedFiles: [],
 		progress: 0,
 		fileNames: [],
+		recipePreviews: [],
+		localPreviews: [],
+		displayPreviews: [],
 	}),
 	watch: {
 		tags(e) {
@@ -201,8 +213,38 @@ export default {
 	},
 	mounted() {
 		this.$store.dispatch('recipes/setDetail', this.$route.params.id)
+		this.recipePreviews = this.recipe.previews.map((p, idx) => ({
+			idx,
+			src: this.getPreviewSrc(p),
+			db: true,
+		}))
+		this.displayPreviews = this.recipePreviews
 	},
 	methods: {
+		removeImage(preview) {
+			if (!preview.db) {
+				this.selectedFiles = this.selectedFiles.filter(
+					(_, idx) => idx !== preview.idx
+				)
+				this.files = this.selectedFiles
+				this.localPreviews = this.getLocalPreviews()
+			} else {
+				this.recipePreviews = this.recipePreviews.filter(
+					(_, idx) => idx !== preview.idx
+				)
+			}
+			this.displayPreviews = this.getDisplayPreviews()
+		},
+		getLocalPreviews() {
+			return this.selectedFiles.map((f, idx) => ({
+				idx,
+				src: URL.createObjectURL(f),
+			}))
+		},
+		getDisplayPreviews() {
+			const local = this.getLocalPreviews()
+			return [...this.recipePreviews, ...local]
+		},
 		getPreviewSrc(preview) {
 			const str = process.env.VUE_APP_API_BASE_URL
 			const base = str.substr(0, str.length - 3)
@@ -210,9 +252,13 @@ export default {
 			// console.log(fullURL)
 			return fullURL
 		},
+		getRemainingPreviews() {
+			return this.recipePreviews.map(e => e.src.split('/').reverse()[0])
+		},
 		update: async function() {
 			this.loading = true
 			try {
+				const recipeRemainingFileNames = this.getRemainingPreviews()
 				await this.$store.dispatch('recipes/edit', {
 					id: this.id,
 					title: this.title,
@@ -220,7 +266,7 @@ export default {
 					ingredients: this.ingredients,
 					level: this.slider,
 					body: this.prodecure,
-					previews: this.fileNames
+					previews: [...recipeRemainingFileNames, ...this.fileNames],
 				})
 				this.loading = false
 				await this.$store.dispatch('recipes/setDetail', this.id)
@@ -252,6 +298,7 @@ export default {
 		selectFiles: function(e) {
 			this.progress = 1
 			this.selectedFiles = e
+			this.displayPreviews = this.getDisplayPreviews()
 		},
 		cancel: async function() {
 			await this.$store.dispatch('recipes/setDetail', this.id)
