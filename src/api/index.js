@@ -55,6 +55,18 @@ class API {
 		}
 	}
 
+	async registerRestaurant(restaurant) {
+		try {
+			const { data } = await this.api.post('/register/restaurant', restaurant)
+			return data
+		} catch (error) {
+			throw {
+				code: error.response.data.code || 401,
+				message: error.response.data.message || 'Invalid credentials',
+			}
+		}
+	}
+
 	async updateUser(user, token) {
 		this.updateToken(token)
 		try {
@@ -77,31 +89,31 @@ class API {
 		return jwt.decode(this.token)
 	}
 
-	async getAllRecipes(token) {
+	async getAllMenus(token) {
 		this.updateToken(token)
-		const { data } = await this.api.get('/recipes')
-		return data.recipes
+		const { data } = await this.api.get('/menuitems')
+		return data.menuitems
 	}
 
-	async getOneRecipe(id, token) {
+	async getOneMenu(id, token) {
 		this.updateToken(token)
-		const { data } = await this.api.get(`/recipes/${id}`)
+		const { data } = await this.api.get(`/menuitems/${id}`)
 		return data.recipe
 	}
 
 	async makeRate(recipe, { rate, comment }, token) {
 		this.updateToken(token)
-		const { data } = await this.api.post(`/recipes/${recipe}/rate`, {
+		const { data } = await this.api.post(`/menuitems/${recipe}/rate`, {
 			rate,
 			comment,
 		})
 		return data.rate
 	}
 
-	async addRecipe(recipe, token) {
+	async addMenuItem(recipe, token) {
 		this.updateToken(token)
 		try {
-			const { data } = await this.api.post(`/recipes`, recipe)
+			const { data } = await this.api.post(`/menuitems`, recipe)
 			return data
 		} catch (error) {
 			throw {
@@ -111,10 +123,10 @@ class API {
 		}
 	}
 
-	async editRecipe(recipe, token) {
+	async editMenuItem(recipe, token) {
 		this.updateToken(token)
 		try {
-			const { data } = await this.api.put(`/recipes/${recipe.id}`, recipe)
+			const { data } = await this.api.put(`/menuitems/${recipe.id}`, recipe)
 			return data
 		} catch (error) {
 			throw {
@@ -124,10 +136,10 @@ class API {
 		}
 	}
 
-	async deleteRecipe(recipe, token) {
+	async deleteMenuItem(recipe, token) {
 		this.updateToken(token)
 		try {
-			const { data } = await this.api.delete(`/recipes/${recipe.id}`, recipe)
+			const { data } = await this.api.delete(`/menuitems/${recipe.id}`, recipe)
 			return data
 		} catch (error) {
 			throw {
