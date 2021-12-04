@@ -4,7 +4,7 @@
 			<v-list-item>
 				<v-list-item-content>
 					<v-list-item-title class="title pb-5 text-center">
-						Recipes App!
+						RID Proyect
 					</v-list-item-title>
 					<v-list-item-subtitle class="mt-5 text-center"
 						>Try something new</v-list-item-subtitle
