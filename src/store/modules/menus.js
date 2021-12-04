@@ -6,7 +6,7 @@ const state = () => ({
 })
 
 const getters = {
-	getFeeds: (state) => {
+	getMainFeed: (state) => {
 		var result = []
 		return state.all.reduce((resultArray, item, index) => {
 			const chunkIndex = index % 3
@@ -25,12 +25,12 @@ const getters = {
 }
 
 const actions = {
-	async getAllRecipes({ commit }, token) {
-		const recipes = await api.getAllRecipes(token)
+	async getAllMenus({ commit }, token) {
+		const recipes = await api.getAllMenus(token)
 		commit('setRecipes', recipes)
 	},
 	async setDetail({ commit }, id) {
-		const recipe = await api.getOneRecipe(id)
+		const recipe = await api.getOneMenu(id)
 		commit('setDetail', recipe)
 		return recipe
 	},
@@ -39,17 +39,17 @@ const actions = {
 		commit('sendRate', result)
 		return result
 	},
-	async addRecipe(_, recipe) {
-		const result = await api.addRecipe(recipe)
+	async addMenuItem(_, recipe) {
+		const result = await api.addMenuItem(recipe)
 		return result
 	},
 	async edit({commit}, recipe) {
-		const result = await api.editRecipe(recipe)
+		const result = await api.editMenuItem(recipe)
 		commit('setDetail', recipe)
 		return result
 	},
 	async delete({commit}, recipe) {
-		const result = await api.deleteRecipe(recipe)
+		const result = await api.deleteMenuItem(recipe)
 		commit('setDetail', {})
 		return result
 	},
