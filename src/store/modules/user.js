@@ -46,6 +46,22 @@ const actions = {
 			throw error
 		}
 	},
+	async registerRestaurant({ commit }, credentials) {
+		try {
+			const result = await api.registerRestaurant(credentials)
+			const { user, token } = await api.login(
+				credentials.username,
+				credentials.password
+			)
+			console.log('actions.register', result)
+			commit('setUser', user)
+			commit('setToken', token)
+			return result
+		} catch (error) {
+			commit('setUser', null)
+			throw error
+		}
+	},
 	setToken({ commit }, token) {
 		console.log('setToken to api', token)
 		api.updateToken(token)
