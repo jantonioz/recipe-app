@@ -32,14 +32,14 @@
 					<v-card-actions>
 						<v-btn
 							class="ml-3 mb-3"
-							color="white green--text"
 							elevation="0"
+							color="primary"
 							@click="register"
-							>Register</v-btn
+							>Registrar</v-btn
 						>
 						<v-spacer></v-spacer>
 						<v-btn class="mr-3 mb-3" color="primary" @click="login"
-							>Login</v-btn
+							>Iniciar sesión</v-btn
 						>
 					</v-card-actions>
 				</v-card>
