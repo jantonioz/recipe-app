@@ -51,10 +51,11 @@
 								placeholder="Contraseña"
 								required
 							></v-text-field>
-							<v-switch
+							<v-checkbox
 								v-model="credentials.isRestaurant"
 								label="Registrar como
 							Restaurante"
+							color="white"
 							/>
 							<div v-if="credentials.isRestaurant">
 								<v-textarea
@@ -138,8 +139,11 @@ export default {
 		async register() {
 			try {
 				this.validate()
+				const dispatchTarget = this.credentials.isRestaurant
+					? 'user/registerRestaurant'
+					: 'user/register'
 				const result = await this.$store.dispatch(
-					'user/register',
+					dispatchTarget,
 					this.credentials
 				)
 				console.log('RegisterPage', result)
