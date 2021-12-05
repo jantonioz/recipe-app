@@ -42,26 +42,20 @@
 						}})
 					</div>
 					•
-					<span class="ml-3 blue--text"
-						>{{ item.author.fullName || item.author.name }}
-					</span>
+					<a @click="gotoAuthor">
+						<span class="ml-3 blue--text"
+							>{{ item.author.fullName || item.author.name }} </span
+						>
+					</a>
 				</v-row>
 
 				<div class="my-4 subtitle-1"># • {{ item.tags.join(', ') }}</div>
-				<div class="text-h6">Ingredientes:</div>
-				<div v-for="ing of item.ingredients" :key="ing" class="ml-3" dense flat>
-					<span>• {{ ing }} </span>
+				<div class="text-h6">
+					Ingredientes: {{ item.ingredients.join(', ') }}
 				</div>
-				<v-textarea
-					class="mt-6 text-body-1"
-					flat
-					solo
-					readonly
-					auto-grow
-					hide-details=""
-					:value="item.body"
-				>
-				</v-textarea>
+				<p class="mt-6 text-body-1">
+					{{ item.body }}
+				</p>
 			</v-card-text>
 
 			<v-divider class="mx-4"></v-divider>
@@ -94,6 +88,7 @@
 											rate.author.fullName
 												.split(' ')
 												.map((e) => e.toUpperCase().charAt(0))
+												.slice(0, 2)
 												.join('')
 										}}
 									</span>
@@ -110,6 +105,7 @@
 											:value="rate.rate"
 											readonly
 											dense
+											color="amber"
 										>
 										</v-rating>
 									</v-col>
@@ -191,6 +187,9 @@ export default {
 		}
 	},
 	methods: {
+		gotoAuthor() {
+			this.$router.push(`/restaurants/${this.item.author._id}`)
+		},
 		createdAt() {
 			return moment.utc(this.item.createdAt).format('LLLL')
 		},
