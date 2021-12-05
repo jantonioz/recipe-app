@@ -200,7 +200,7 @@ export default {
 			) {
 				console.log('a2')
 			}
-			this.$router.push(`/recipes/edit/${this.$route.params.id}`)
+			this.$router.push(`/menus/edit/${this.$route.params.id}`)
 		},
 		getPreviewSrc(preview) {
 			const str = process.env.VUE_APP_API_BASE_URL
