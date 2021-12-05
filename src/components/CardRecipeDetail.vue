@@ -205,7 +205,7 @@ export default {
 		getPreviewSrc(preview) {
 			const str = process.env.VUE_APP_API_BASE_URL
 			const base = str.substr(0, str.length - 3)
-			const fullURL = `${base}content/previews/${preview}`
+			const fullURL = `${base}api/content/previews/${preview}`
 			// console.log(fullURL)
 			return fullURL
 		},
