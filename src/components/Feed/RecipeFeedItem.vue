@@ -14,14 +14,21 @@
 		</template>
 
 		<v-img
-		class="pa-2"
+			class="pa-2"
 			v-if="!item.previews || !item.previews.length"
 			height="168"
 			width="200"
 			src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
 		></v-img>
 
-		<v-carousel v-if="item.previews && item.previews.length" hide-delimiters>
+		<v-carousel
+			v-if="item.previews && item.previews.length"
+			hide-delimiters
+			height="168"
+			width="200"
+			:cycle="true"
+			:interval="3000"
+		>
 			<v-carousel-item
 				v-for="(preview, i) in item.previews"
 				:key="i"
@@ -31,10 +38,10 @@
 
 		<v-card-title class="menuItemCenter">{{ item.title }}</v-card-title>
 
-		<v-card-text  class="menuItemCenter">
+		<v-card-text class="menuItemCenter">
 			<div class="grey--text">
 				<v-icon class="mr-1" color="yellow">mdi-star</v-icon>
-				<span> {{ (item.rateAvg || 0 ).toFixed(1) }}</span>
+				<span> {{ (item.rateAvg || 0).toFixed(1) }}</span>
 			</div>
 		</v-card-text>
 	</v-card>
@@ -67,7 +74,7 @@ export default {
 		getPreviewSrc(preview) {
 			const str = process.env.VUE_APP_API_BASE_URL
 			const base = str.substr(0, str.length - 3)
-			const fullURL = `${base}content/previews/${preview}`
+			const fullURL = `${base}api/content/previews/${preview}`
 			// console.log(fullURL)
 			return fullURL
 		},
