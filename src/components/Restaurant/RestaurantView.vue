@@ -2,20 +2,68 @@
 list of the restaurant's menu items
 <template>
 	<v-container>
-		<!-- An image centered and below the image is a list of the restaurant's menu items -->
-		<v-img
-			height="250"
-			src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-			class="titleRest"
-		>
-			<p
-				style="height:100%"
-				class="d-flex justify-center align-center text-h1 titleRest"
+		<v-sheet :rounded="true" class="pa-2" color="primary darken-2">
+			<v-img
+				height="250"
+				src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+				class="titleRest"
 			>
-				{{ item.restaurantInfo ? item.restaurantInfo.name : 'Loading...' }}
-			</p>
-		</v-img>
-    <Feed :items="item.menuItems" />
+				<p
+					style="height:100%"
+					class="d-flex justify-center align-center text-h1 titleRest"
+				>
+					{{ item.restaurantInfo ? item.restaurantInfo.name : 'Loading...' }}
+				</p>
+			</v-img>
+
+			<Feed :items="item.menuItems" />
+			<v-divider class="mt-2" dark></v-divider>
+			<v-row class="mt-2 pa-3">
+				<v-col class="d-flex flex-direction-row align-start">
+					<v-icon>
+						mdi-information-outline
+					</v-icon>
+					<p
+						class="pa-2 rounded-p"
+						prepend-icon="mdi-information-outline"
+						placeholder="Información acerca de"
+						:value="item.restaurantInfo.about"
+						readonly
+						no-resize
+						outlined
+					>
+						{{ item.restaurantInfo.about }}
+					</p>
+				</v-col>
+				<v-col>
+					<v-text-field
+						prepend-icon="mdi-map-marker"
+						label="Dirección"
+						:value="item.restaurantInfo.address"
+						readonly
+					></v-text-field>
+					<v-text-field
+						prepend-icon="mdi-phone"
+						label="Teléfono"
+						:value="item.restaurantInfo.phone"
+						readonly
+					></v-text-field>
+					<v-text-field
+						prepend-icon="mdi-alphabetical-variant"
+						label="Nombre"
+						:value="item.restaurantInfo.name"
+						readonly
+					></v-text-field>
+					<v-text-field
+						prepend-icon="mdi-at"
+						label="Correo de contacto"
+						:value="item.restaurantInfo.emailContact"
+						readonly
+					>
+					</v-text-field>
+				</v-col>
+			</v-row>
+		</v-sheet>
 	</v-container>
 </template>
 
@@ -26,9 +74,9 @@ import { mapGetters } from 'vuex'
 // import { isMobile, isTablet } from 'mobile-device-detect'
 
 export default {
-  components: {
-    Feed
-  },
+	components: {
+		Feed,
+	},
 	computed: {
 		...mapGetters('restaurants', {
 			item: 'getSelected',
@@ -69,5 +117,13 @@ export default {
 		rgba(253, 29, 29, 1) 50%,
 		rgba(252, 176, 69, 1) 100%
 	); */
+}
+.rounded-p {
+	border-radius: 2px !important;
+	border: 1px solid #fff !important;
+	height: 80%;
+	width: 100%;
+	padding-top: 10%;
+	margin-left: 0.2em;
 }
 </style>
