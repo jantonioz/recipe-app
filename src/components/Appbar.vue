@@ -106,8 +106,8 @@ export default {
 		mobile: isMobile || isTablet,
 	}),
 	computed: {
-		...mapGetters('recipes', {
-			recipes: 'getAll',
+		...mapGetters('menus', {
+			menuitems: 'getAll',
 		}),
 		...mapGetters('user', {
 			user: 'getUser',
@@ -127,7 +127,7 @@ export default {
 			this.loading = true
 			// Simulated ajax query
 			setTimeout(() => {
-				this.items = this.recipes
+				this.items = this.menuitems
 					.map((e) => e.title)
 					.filter((e) => {
 						return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
@@ -136,9 +136,9 @@ export default {
 			}, 10)
 		},
 		onClick(evt) {
-			const item = this.recipes.find((e) => e.title === evt.target.innerText)
+			const item = this.menuitems.find((e) => e.title === evt.target.innerText)
 			if (!item) return null
-			this.$router.push(`/recipes/view/${item._id}`)
+			this.$router.push(`/menuitems/view/${item._id}`)
 		},
 		toggleDrawer() {
 			this.$store.dispatch('drawer/toggleDrawer')
