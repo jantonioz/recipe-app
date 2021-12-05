@@ -32,10 +32,10 @@
 
 		<v-card-title class="menuItemCenter">{{ item.title }}</v-card-title>
 
-		<v-card-text class="menuItemCenter">
+		<v-card-text  class="menuItemCenter">
 			<div class="grey--text">
 				<v-icon class="mr-1" color="yellow">mdi-star</v-icon>
-				<span> {{ item.rateAvg.toFixed(1) }}</span>
+				<span> {{ (item.rateAvg || 0 ).toFixed(1) }}</span>
 			</div>
 		</v-card-text>
 	</v-card>
