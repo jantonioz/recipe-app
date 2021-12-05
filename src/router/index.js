@@ -8,9 +8,16 @@ import Profile from '../components/Profile'
 import Login from '../components/LoginPage'
 import Register from '../components/RegisterPage'
 
+import RestaurantView from '../components/Restaurant/RestaurantView'
+
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/restaurants/:id',
+    name: 'restaurant',
+    component: RestaurantView
+  },
   {
     path: '/',
     name: 'Feed',
