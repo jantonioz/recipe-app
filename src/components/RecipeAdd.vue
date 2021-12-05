@@ -19,19 +19,19 @@
 		</v-card-title>
 
 		<v-card-text>
-			<v-row justify="start" align-content="center">
-				<v-col cols="2">
+			<v-row justify="space-between" align-content="center">
+				<v-col cols="3">
 					<v-subheader class="">
-						Dificulty level
+						Rango de precio  <span class="ml-2"> {{ "$".repeat(slider)}} </span>
 					</v-subheader></v-col
 				>
 				<v-col class="mt-2" cols="3">
 					<v-slider
 						v-model="slider"
-						thumb-label="always"
 						:max="5"
 						:min="1"
-					></v-slider>
+					>
+					</v-slider>
 				</v-col>
 				<v-col>
 					<v-combobox
@@ -44,6 +44,7 @@
 						outlined
 						dense
 						small-chips
+						placeholder="#mexicana #cena"
 					></v-combobox>
 				</v-col>
 			</v-row>
@@ -53,12 +54,12 @@
 				chips
 				multiple
 				outlined
-				label="Ingredients"
+				label="Ingredientes"
 			></v-combobox>
 			<v-textarea
 				flat
 				outlined
-				label="Procedure"
+				label="Descripción"
 				v-model="prodecure"
 			></v-textarea>
 			<RecipeAddImagesPreview :images="this.previews" :onClick="removeImage" />
@@ -68,7 +69,7 @@
 				class="mt-2"
 				color="green darken-2"
 				counter
-				label="Previews"
+				label="Imagenes"
 				multiple
 				outlined
 				:shadow-size="100"
@@ -97,11 +98,11 @@
 		<v-alert dense outlined type="error" v-if="error.code">
 			<strong>{{ error.code }}</strong> {{ error.message }}
 		</v-alert>
-		<v-card-actions class="d-flex justify-end">
+		<v-card-actions class="d-flex justify-end mx-3">
 			<v-btn class="orange lighten-1" text dark @click="cancel">
 				Cancel
 			</v-btn>
-			<v-divider></v-divider>
+			<v-divider class="mx-10"></v-divider>
 			<v-btn class="green darken-1" text dark @click="upload">
 				Add
 			</v-btn>
@@ -151,7 +152,7 @@ export default {
 	methods: {
 		addRecipe: async function() {
 			try {
-				const result = await this.$store.dispatch('recipes/addRecipe', {
+				const result = await this.$store.dispatch('menus/add', {
 					title: this.title,
 					tags: this.tags,
 					ingredients: this.ingredients,
@@ -160,8 +161,8 @@ export default {
 					previews: this.fileNames,
 				})
 				this.loading = false
-				await this.$store.dispatch('recipes/setDetail', result.recipe._id)
-				this.$router.push(`/recipes/view/${result.recipe._id}`)
+				await this.$store.dispatch('menus/setDetail', result.menuitem._id)
+				this.$router.push(`/menus/view/${result.menuitem._id}`)
 			} catch (error) {
 				this.loading = false
 				console.log(error)
