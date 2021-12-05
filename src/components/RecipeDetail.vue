@@ -27,6 +27,7 @@ export default {
 		loading: true,
 		id: 9999,
 		mobile: isMobile || isTablet,
+		fromRoute: null
 	}),
 	computed: {
 		...mapGetters('menus', {
@@ -44,10 +45,26 @@ export default {
 		await this.$store.dispatch('menus/setDetail', this.$route.params.id)
 		this.loading = false
 	},
+	beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.fromRoute = from;
+    })
+  },
 	methods: {
 		back() {
-			this.$router.push('/')
+			if (!this.fromRoute.name) {
+        this.$router.push('/');
+      } else {
+        this.$router.back();
+      }
 		},
+		handleBack (fallback) {
+      if (!this.fromRoute.name) {
+        this.$router.push(fallback);
+      } else {
+        this.$router.back();
+      }
+    }
 	},
 }
 </script>
