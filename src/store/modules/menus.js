@@ -7,14 +7,7 @@ const state = () => ({
 
 const getters = {
 	getMainFeed: (state) => {
-		var result = []
-		return state.all.reduce((resultArray, item, index) => {
-			const chunkIndex = index % 3
-			if (!result[chunkIndex]) result[chunkIndex] = []
-
-			result[chunkIndex] = [item, ...result[chunkIndex]]
-			return result
-		}, [])
+		return state.all
 	},
 	getAll: (state) => {
 		return state.all
@@ -26,44 +19,44 @@ const getters = {
 
 const actions = {
 	async getAllMenus({ commit }, token) {
-		const recipes = await api.getAllMenus(token)
-		commit('setRecipes', recipes)
+		const menuItems = await api.getAllMenus(token)
+		commit('setAll', menuItems)
 	},
 	async setDetail({ commit }, id) {
-		const recipe = await api.getOneMenu(id)
-		commit('setDetail', recipe)
-		return recipe
+		const menuItem = await api.getOneMenu(id)
+		commit('setDetail', menuItem)
+		return menuItem
 	},
-	async sendRate({ commit }, { recipe, rate, comment }) {
-		const result = await api.makeRate(recipe, { rate, comment })
+	async sendRate({ commit }, { menuItem, rate, comment }) {
+		const result = await api.makeRate(menuItem, { rate, comment })
 		commit('sendRate', result)
 		return result
 	},
-	async addMenuItem(_, recipe) {
-		const result = await api.addMenuItem(recipe)
+	async addMenuItem(_, menuItem) {
+		const result = await api.addMenuItem(menuItem)
 		return result
 	},
-	async edit({commit}, recipe) {
-		const result = await api.editMenuItem(recipe)
-		commit('setDetail', recipe)
+	async edit({ commit }, menuItem) {
+		const result = await api.editMenuItem(menuItem)
+		commit('setDetail', menuItem)
 		return result
 	},
-	async delete({commit}, recipe) {
-		const result = await api.deleteMenuItem(recipe)
+	async delete({ commit }, menuItem) {
+		const result = await api.deleteMenuItem(menuItem)
 		commit('setDetail', {})
 		return result
 	},
 }
 
 const mutations = {
-	setRecipes(state, recipes) {
-		state.all = recipes
+	setAll(state, menuItems) {
+		state.all = menuItems
 	},
-	setDetail(state, recipe) {
-		state.detail = recipe
+	setDetail(state, menuItem) {
+		state.detail = menuItem
 	},
-	sendRate(state, recipe) {
-		state.detail = recipe
+	sendRate(state, menuItem) {
+		state.detail = menuItem
 	},
 }
 
