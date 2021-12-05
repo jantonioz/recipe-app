@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<div class="mx-5">
 		<v-fab-transition>
 			<v-btn color="blue" dark fixed bottom left fab @click="top"
 				><v-icon>
@@ -8,7 +8,15 @@
 			</v-btn>
 		</v-fab-transition>
 		<v-fab-transition>
-			<v-btn color="green" dark fixed bottom right rounded @click="addNew" style="z-index:999"
+			<v-btn
+				color="green"
+				dark
+				fixed
+				bottom
+				right
+				rounded
+				@click="addNew"
+				style="z-index:999"
 				><v-icon>
 					mdi-plus
 				</v-icon>
@@ -16,20 +24,9 @@
 			</v-btn>
 		</v-fab-transition>
 		<v-row justify="center" v-if="!mobile">
-			<v-col cols="4">
-				<ListFeed :colIndex="0" :list="feedLists[0]" />
-			</v-col>
-			<v-col cols="4">
-				<ListFeed :colIndex="1" :list="feedLists[1]" />
-			</v-col>
-			<v-col cols="4">
-				<ListFeed :colIndex="2" :list="feedLists[2]" />
-			</v-col>
+			<ListFeed :list="feed" />
 		</v-row>
-		<v-row v-else>
-			<ListFeed :colIndex="2" :list="feed" />
-		</v-row>
-	</v-container>
+	</div>
 </template>
 
 <script>
@@ -46,13 +43,13 @@ export default {
 		ListFeed,
 	},
 	computed: {
-		...mapGetters('recipes', {
-			feedLists: 'getFeeds',
+		...mapGetters('menus', {
+			feedLists: 'getMainFeed',
 		}),
 		...mapGetters('user', {
 			token: 'getToken',
 		}),
-		...mapGetters('recipes', {
+		...mapGetters('menus', {
 			feed: 'getAll',
 		}),
 	},
@@ -61,11 +58,11 @@ export default {
 			window.scrollTo(0, 0)
 		},
 		addNew: function() {
-			this.$router.push('/recipes/add')
+			this.$router.push('/menus/add')
 		},
 	},
 	async mounted() {
-		await this.$store.dispatch('recipes/getAllRecipes', this.token)
+		await this.$store.dispatch('menus/getAllMenus', this.token)
 	},
 }
 </script>
