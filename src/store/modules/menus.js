@@ -32,7 +32,7 @@ const actions = {
 		commit('sendRate', result)
 		return result
 	},
-	async addMenuItem(_, menuItem) {
+	async add(_, menuItem) {
 		const result = await api.addMenuItem(menuItem)
 		return result
 	},
