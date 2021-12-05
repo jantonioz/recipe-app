@@ -1,8 +1,8 @@
 <template>
-	<div class="d-flex flex-row flex-wrap justify-start">
-		<v-col v-for="item in list" :key="item.id" v-bind:title="item.title" cols="2">
+	<div class="d-flex flex-row flex-wrap justify-start mt-2">
+		<div v-for="item in list" :key="item.id" v-bind:title="item.title" class="px-1" >
 			<RecipeFeedItem :item="item" :more="true" :large="false" />
-		</v-col>
+		</div>
 	</div>
 </template>
 
