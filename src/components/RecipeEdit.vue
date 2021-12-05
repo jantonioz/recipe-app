@@ -29,18 +29,13 @@
 
 		<v-card-text>
 			<v-row justify="start" align-content="center">
-				<v-col cols="2">
+				<v-col cols="3">
 					<v-subheader class="">
-						Dificulty level
+						Rango de precio <span class="ml-2"> {{ '$'.repeat(slider) }} </span>
 					</v-subheader></v-col
 				>
 				<v-col class="mt-2" cols="3">
-					<v-slider
-						v-model="slider"
-						thumb-label="always"
-						:max="5"
-						:min="1"
-					></v-slider>
+					<v-slider v-model="slider" :max="5" :min="1"></v-slider>
 				</v-col>
 				<v-col>
 					<v-combobox
@@ -62,12 +57,12 @@
 				chips
 				multiple
 				outlined
-				label="Ingredients"
+				label="Ingredientes"
 			></v-combobox>
 			<v-textarea
 				flat
 				outlined
-				label="Procedure"
+				label="Descripción"
 				v-model="prodecure"
 			></v-textarea>
 			<RecipeAddImagesPreview
@@ -80,7 +75,7 @@
 				color="green darken-2"
 				class="mt-2"
 				counter
-				label="Previews"
+				label="Imagenes"
 				multiple
 				outlined
 				:shadow-size="100"
@@ -110,14 +105,14 @@
 		</v-alert>
 		<v-card-actions class="d-flex justify-end">
 			<v-btn class="red darken-1" text dark @click="dialog = true">
-				Delete
+				Eliminar
 			</v-btn>
 			<v-spacer></v-spacer>
 			<v-btn class="orange darken-1 mr-6" text dark @click="cancel">
-				Cancel
+				Cancelar
 			</v-btn>
 			<v-btn class="green darken-1" text dark @click="upload">
-				Edit
+				Editar
 			</v-btn>
 		</v-card-actions>
 		<v-overlay :value="loading">
@@ -126,25 +121,25 @@
 		<v-dialog v-model="dialog" width="500">
 			<v-card>
 				<v-card-title class="headline red darken-1 white--text">
-					Alert you are deleting {{ title }}
+					Estas borrando {{ title }}
 				</v-card-title>
 
 				<v-card-text class="mt-2">
-					You sure you want to delete "{{ title }}"?
+					¿Estás seguro que quieres eliminar "{{ title }}"?
 
 					<br />
-					This action will permanently delete this recipe.
+					Esta acción eliminará permanentemente el plato de la base de datos.
 				</v-card-text>
 
 				<v-divider></v-divider>
 
 				<v-card-actions>
 					<v-btn color="orange lighten-1" text @click="dialog = false">
-						No, cancel
+						No, cancelar
 					</v-btn>
 					<v-spacer></v-spacer>
 					<v-btn color="red lighten-1" text @click="_delete">
-						Yes, delete it
+						Sí, eliminar
 					</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -180,7 +175,7 @@ export default {
 		selectedFiles: [],
 		progress: 0,
 		fileNames: [],
-		recipePreviews: [],
+		menuPreviews: [],
 		localPreviews: [],
 		displayPreviews: [],
 	}),
@@ -191,7 +186,7 @@ export default {
 		ingredents(e) {
 			this.ingredentsItems = e
 		},
-		recipe(r) {
+		menu(r) {
 			if (r && r.title) {
 				this.id = r._id || r.id
 				this.title = r.title
@@ -207,18 +202,18 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters('recipes', {
-			recipe: 'getSelected',
+		...mapGetters('menus', {
+			menu: 'getSelected',
 		}),
 	},
 	mounted() {
-		this.$store.dispatch('recipes/setDetail', this.$route.params.id)
-		this.recipePreviews = this.recipe.previews.map((p, idx) => ({
+		this.$store.dispatch('menus/setDetail', this.$route.params.id)
+		this.menuPreviews = this.menu.previews.map((p, idx) => ({
 			idx,
 			src: this.getPreviewSrc(p),
 			db: true,
 		}))
-		this.displayPreviews = this.recipePreviews
+		this.displayPreviews = this.menuPreviews
 	},
 	methods: {
 		removeImage(preview) {
@@ -229,7 +224,7 @@ export default {
 				this.files = this.selectedFiles
 				this.localPreviews = this.getLocalPreviews()
 			} else {
-				this.recipePreviews = this.recipePreviews.filter(
+				this.menuPreviews = this.menuPreviews.filter(
 					(_, idx) => idx !== preview.idx
 				)
 			}
@@ -243,23 +238,22 @@ export default {
 		},
 		getDisplayPreviews() {
 			const local = this.getLocalPreviews()
-			return [...this.recipePreviews, ...local]
+			return [...this.menuPreviews, ...local]
 		},
 		getPreviewSrc(preview) {
 			const str = process.env.VUE_APP_API_BASE_URL
 			const base = str.substr(0, str.length - 3)
-			const fullURL = `${base}content/previews/${preview}`
-			// console.log(fullURL)
+			const fullURL = `${base}api/content/previews/${preview}`
 			return fullURL
 		},
 		getRemainingPreviews() {
-			return this.recipePreviews.map(e => e.src.split('/').reverse()[0])
+			return this.menuPreviews.map((e) => e.src.split('/').reverse()[0])
 		},
 		update: async function() {
 			this.loading = true
 			try {
 				const recipeRemainingFileNames = this.getRemainingPreviews()
-				await this.$store.dispatch('recipes/edit', {
+				await this.$store.dispatch('menus/edit', {
 					id: this.id,
 					title: this.title,
 					tags: this.tags,
@@ -269,8 +263,8 @@ export default {
 					previews: [...recipeRemainingFileNames, ...this.fileNames],
 				})
 				this.loading = false
-				await this.$store.dispatch('recipes/setDetail', this.id)
-				this.$router.push(`/recipes/view/${this.id}`)
+				await this.$store.dispatch('menus/setDetail', this.id)
+				this.$router.push(`/menus/view/${this.id}`)
 			} catch (error) {
 				this.loading = false
 				console.log(error)
@@ -301,13 +295,13 @@ export default {
 			this.displayPreviews = this.getDisplayPreviews()
 		},
 		cancel: async function() {
-			await this.$store.dispatch('recipes/setDetail', this.id)
-			this.$router.push(`/recipes/view/${this.id}`)
+			await this.$store.dispatch('menus/setDetail', this.id)
+			this.$router.push(`/menus/view/${this.id}`)
 		},
 		_delete: async function() {
 			this.loading = true
 			try {
-				await this.$store.dispatch('recipes/delete', {
+				await this.$store.dispatch('menus/delete', {
 					id: this.id,
 				})
 				this.loading = false
