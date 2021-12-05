@@ -50,14 +50,14 @@
 						<v-list-item-icon>
 							<v-icon>mdi-account</v-icon>
 						</v-list-item-icon>
-						<v-list-item-title> Profile </v-list-item-title>
+						<v-list-item-title> Perfil </v-list-item-title>
 					</v-list-item>
 
 					<v-list-item v-if="user.isRestaurant" @click.stop="goTo('/menuitem/add')">
 						<v-list-item-icon>
 							<v-icon>mdi-plus</v-icon>
 						</v-list-item-icon>
-						<v-list-item-title> Add recipe </v-list-item-title>
+						<v-list-item-title> Agregar Menú </v-list-item-title>
 					</v-list-item>
 				</v-list-item-group>
 			</v-list>

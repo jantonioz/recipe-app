@@ -16,20 +16,20 @@
 							<v-col>
 								<v-text-field
 									v-model="username"
-									label="username"
+									label="Nombre de usuario"
 									outlined
 								></v-text-field>
 								<v-text-field
 									v-model="fullName"
-									label="Full name"
+									label="Nombre completo"
 									outlined
 								></v-text-field>
 								<v-text-field
 									v-model="email"
-									label="Email Address"
+									label="Email de acceso"
 									outlined
 								></v-text-field>
-								<v-card-text>Birthday</v-card-text>
+								<v-card-text>Fecha de nacimiento</v-card-text>
 								<v-date-picker
 									v-model="birthday"
 									color="green lighten-1"
@@ -45,7 +45,7 @@
 							@click.native="update"
 						>
 							<v-icon left dark>mdi-account-check</v-icon>
-							Save Changes
+							Guardar Cambios
 						</v-btn>
 					</v-card-actions>
 				</v-card>
