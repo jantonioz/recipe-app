@@ -166,7 +166,7 @@ export default {
 		...mapGetters('user', {
 			user: 'getUser',
 		}),
-		...mapGetters('recipes', {
+		...mapGetters('menus', {
 			selected: 'getSelected',
 		}),
 	},
@@ -181,7 +181,7 @@ export default {
 		CardRecipeDetailComment,
 	},
 	async created() {
-		await this.$store.dispatch('recipes/setDetail', this.$route.params.id)
+		await this.$store.dispatch('menus/setDetail', this.$route.params.id)
 	},
 	mounted() {
 		if (this.item && this.user.name) {
