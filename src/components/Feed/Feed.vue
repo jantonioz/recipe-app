@@ -52,6 +52,7 @@ export default {
 		}),
 		...mapGetters('user', {
 			token: 'getToken',
+			user: 'getUser',
 		}),
 		...mapGetters('menus', {
 			feed: 'getAll',
