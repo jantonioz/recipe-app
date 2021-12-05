@@ -11,12 +11,25 @@ class API {
 		this.token = null
 	}
 
+	getAllRestaurants() {
+		return this.api.get('/restaurants')
+	}
+
+	async getOneRestaurant(id) {
+		try {
+			const { data } = await this.api.get(`/restaurants/${id}`)
+			return data
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	async upload(formData, onUploadProgress) {
 		return this.api.post('/previews', formData, {
 			headers: {
-				'Content-Type': 'multipart/form-data'
+				'Content-Type': 'multipart/form-data',
 			},
-			onUploadProgress
+			onUploadProgress,
 		})
 	}
 
