@@ -100,11 +100,11 @@
 		</v-alert>
 		<v-card-actions class="d-flex justify-end mx-3">
 			<v-btn class="orange lighten-1" text dark @click="cancel">
-				Cancel
+				Cancelar
 			</v-btn>
 			<v-divider class="mx-10"></v-divider>
 			<v-btn class="green darken-1" text dark @click="upload">
-				Add
+				Agregar	
 			</v-btn>
 		</v-card-actions>
 		<v-overlay :value="loading">
