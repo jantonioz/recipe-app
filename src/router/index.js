@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Feed from '../components/Feed'
+import Feed from '../components/Feed/Feed'
 import RecipeDetail from '../components/RecipeDetail'
 import RecipeAdd from '../components/RecipeAdd'
 import RecipeEdit from '../components/RecipeEdit'
@@ -17,17 +17,17 @@ const routes = [
     component: Feed
   },
   {
-    path: '/recipes/view/:id',
+    path: '/menus/view/:id',
     name: 'RecipeDetail',
     component: RecipeDetail
   },
   {
-    path: '/recipes/edit/:id',
+    path: '/menus/edit/:id',
     name: 'RecipeEdit',
     component: RecipeEdit
   },
   {
-    path: '/recipes/add',
+    path: '/menus/add',
     name: 'RecipeAdd',
     component: RecipeAdd
   },
