@@ -98,7 +98,7 @@ class API {
 	async getOneMenu(id, token) {
 		this.updateToken(token)
 		const { data } = await this.api.get(`/menuitems/${id}`)
-		return data.recipe
+		return data.menuitem
 	}
 
 	async makeRate(recipe, { rate, comment }, token) {
