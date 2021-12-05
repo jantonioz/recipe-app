@@ -2,8 +2,7 @@
 	<v-card
 		class="my-2 "
 		v-if="item.rateAvg || recipe"
-		max-height="260"
-		max-width="204"
+		width="200"
 		@click="verMas"
 	>
 		<template slot="progress">
@@ -15,7 +14,7 @@
 		</template>
 
 		<v-img
-			class="mx-1"
+		class="pa-2"
 			v-if="!item.previews || !item.previews.length"
 			height="168"
 			width="200"
