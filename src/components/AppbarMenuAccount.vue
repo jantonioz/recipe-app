@@ -53,7 +53,7 @@
 						<v-list-item-title> Profile </v-list-item-title>
 					</v-list-item>
 
-					<v-list-item @click.stop="goTo('/recipes/add')">
+					<v-list-item v-if="user.isRestaurant" @click.stop="goTo('/menuitem/add')">
 						<v-list-item-icon>
 							<v-icon>mdi-plus</v-icon>
 						</v-list-item-icon>

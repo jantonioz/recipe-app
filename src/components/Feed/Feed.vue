@@ -7,7 +7,7 @@
 				</v-icon>
 			</v-btn>
 		</v-fab-transition>
-		<v-fab-transition>
+		<v-fab-transition v-if="user.isRestaurant">
 			<v-btn
 				color="green"
 				dark
@@ -24,7 +24,8 @@
 			</v-btn>
 		</v-fab-transition>
 		<v-row justify="center" v-if="!mobile">
-			<ListFeed :list="feed" />
+			<ListFeed :list="items" />
+			<ListFeed v-if="!items" :list="feed" />
 		</v-row>
 	</div>
 </template>
@@ -36,6 +37,9 @@ import ListFeed from './ListFeed'
 
 export default {
 	name: 'Feed',
+	props: {
+		items: Array,
+	},
 	data: () => ({
 		mobile: isMobile || isTablet,
 	}),
@@ -62,7 +66,7 @@ export default {
 		},
 	},
 	async mounted() {
-		await this.$store.dispatch('menus/getAllMenus', this.token)
+		if (!this.items) await this.$store.dispatch('menus/getAllMenus', this.token)
 	},
 }
 </script>

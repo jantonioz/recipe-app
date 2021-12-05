@@ -1,6 +1,6 @@
 <template>
-	<v-app>
-		<Appbar title="Recipes App!" v-if="user.name" />
+	<v-app style="height: 100%">
+		<Appbar title="RID" v-if="user.name" />
 		<NavigationDrawer v-if="user.name" />
 		<v-main>
 			<router-view></router-view>

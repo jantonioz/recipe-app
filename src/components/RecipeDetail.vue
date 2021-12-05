@@ -29,7 +29,7 @@ export default {
 		mobile: isMobile || isTablet,
 	}),
 	computed: {
-		...mapGetters('recipes', {
+		...mapGetters('menus', {
 			item: 'getSelected',
 		}),
 	},
@@ -41,7 +41,7 @@ export default {
 		},
 	},
 	async mounted() {
-		await this.$store.dispatch('recipes/setDetail', this.$route.params.id)
+		await this.$store.dispatch('menus/setDetail', this.$route.params.id)
 		this.loading = false
 	},
 	methods: {

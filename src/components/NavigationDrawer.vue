@@ -7,7 +7,7 @@
 						RID Proyect
 					</v-list-item-title>
 					<v-list-item-subtitle class="mt-5 text-center"
-						>Try something new</v-list-item-subtitle
+						>Prueba algo nuevo</v-list-item-subtitle
 					>
 				</v-list-item-content>
 			</v-list-item>
@@ -30,9 +30,8 @@ import { mapGetters } from 'vuex'
 export default {
 	data: () => ({
 		navList: [
-			{ text: 'Home', link: '/', icon: 'mdi-home' },
-			{ text: 'Profile', link: '/profile', icon: 'mdi-account' },
-			{ text: 'Create recipe', link: '/recipes/add', icon: 'mdi-plus' },
+			{ text: 'Inicio', link: '/', icon: 'mdi-home' },
+			{ text: 'Perfil', link: '/profile', icon: 'mdi-account' },
 		],
 	}),
 	computed: {
