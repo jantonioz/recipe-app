@@ -138,7 +138,7 @@ export default {
 		onClick(evt) {
 			const item = this.menuitems.find((e) => e.title === evt.target.innerText)
 			if (!item) return null
-			this.$router.push(`/menuitems/view/${item._id}`)
+			this.$router.push(`/menus/view/${item._id}`)
 		},
 		toggleDrawer() {
 			this.$store.dispatch('drawer/toggleDrawer')
