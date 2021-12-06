@@ -114,9 +114,9 @@ class API {
 		return data.menuitem
 	}
 
-	async makeRate(recipe, { rate, comment }, token) {
+	async makeRate(menuItemId, { rate, comment }, token) {
 		this.updateToken(token)
-		const { data } = await this.api.post(`/menuitems/${recipe}/rate`, {
+		const { data } = await this.api.post(`/menuitems/${menuItemId}/rate`, {
 			rate,
 			comment,
 		})
