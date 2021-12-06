@@ -41,7 +41,7 @@
 import { mapGetters } from 'vuex'
 export default {
 	props: {
-		recipeId: String,
+		menuItemId: String,
 		maxWidth: Number,
 	},
 	data: () => ({
@@ -55,8 +55,8 @@ export default {
 	},
 	methods: {
 		async enviar() {
-			await this.$store.dispatch('recipes/sendRate', {
-				recipe: this.recipeId,
+			await this.$store.dispatch('menus/sendRate', {
+				menuItem: this.menuItemId,
 				comment: this.comment,
 				rate: this.rating,
 			})

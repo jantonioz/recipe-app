@@ -134,7 +134,7 @@
 				</v-list>
 			</v-card-text>
 		</v-card>
-		<CardRecipeDetailComment :maxWidth="1000" :recipeId="item._id" />
+		<CardRecipeDetailComment :maxWidth="1000" :menuItemId="item._id" />
 	</div>
 </template>
 
