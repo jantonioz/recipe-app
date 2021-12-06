@@ -15,6 +15,35 @@ list of the restaurant's menu items
 					{{ item.restaurantInfo ? item.restaurantInfo.name : 'Loading...' }}
 				</p>
 			</v-img>
+			<v-divider class="mt-2 pa-3"></v-divider>
+			<v-autocomplete
+				v-model="select"
+				:loading="loading"
+				:items="items"
+				:search-input.sync="search"
+				cache-items
+				class="search-bar"
+				label="Buscar en este restaurante..."
+				clearable
+				hide-details
+				rounded
+				solo-inverted
+				hint="Buscar en este restaurante"
+				color="#000"
+				dense
+				flat
+				hide-no-data
+				item-color="secondary"
+				v-if="items && !mobile"
+				dark
+			>
+				<template v-slot:item="{ item }" dark>
+					<v-list-item-content @click="onClick">
+						<v-list-item-title v-text="item"></v-list-item-title>
+					</v-list-item-content>
+				</template>
+			</v-autocomplete>
+			<v-divider class="mt-2 pa-3"></v-divider>
 
 			<Feed :items="item.menuItems" />
 			<v-divider class="mt-2" dark></v-divider>
@@ -77,6 +106,15 @@ export default {
 	components: {
 		Feed,
 	},
+	data() {
+		return {
+			select: '',
+			search: '',
+			items: [],
+			loading: false,
+			mobile: false,
+		}
+	},
 	computed: {
 		...mapGetters('restaurants', {
 			item: 'getSelected',
@@ -86,6 +124,10 @@ export default {
 		item(i) {
 			console.log('watch item', i)
 		},
+		search(val) {
+			val && val !== this.select && this.querySelections(val)
+			// console.log('val', val)
+		},
 	},
 	async mounted() {
 		await this.$store.dispatch('restaurants/setDetail', this.$route.params.id)
@@ -94,6 +136,21 @@ export default {
 	methods: {
 		back() {
 			this.$router.push('/')
+		},
+		querySelections(v) {
+			this.loading = true
+
+			this.items = this.item.menuItems
+				.map((e) => e.title)
+				.filter((e) => {
+					return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+				})
+			this.loading = false
+		},
+		onClick(evt) {
+			const item = this.menuitems.find((e) => e.title === evt.target.innerText)
+			if (!item) return null
+			this.$router.push(`/menus/view/${item._id}`)
 		},
 	},
 }
