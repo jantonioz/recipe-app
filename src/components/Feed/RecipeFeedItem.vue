@@ -36,7 +36,7 @@
 			></v-carousel-item>
 		</v-carousel>
 
-		<v-card-title class="menuItemCenter">{{ item.title }}</v-card-title>
+		<v-card-title class="menuItemCenter d-inline-block text-truncate" style="max-width: 200px;">{{ item.title }}</v-card-title>
 
 		<v-card-text class="menuItemCenter">
 			<div class="grey--text">
